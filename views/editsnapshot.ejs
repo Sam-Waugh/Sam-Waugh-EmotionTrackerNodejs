@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emo Tracker</title>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.17.11/dist/css/uikit.min.css" />
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.11/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.17.11/dist/js/uikit-icons.min.js"></script>
+</head>
+
+    <body>
+        <div class="uk-section">
+            <div class="uk-container">
+
+                <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+
+                    <div class="uk-navbar-left">
+                        <img src="/imgs/smiley.png">
+
+                        <ul class="uk-navbar-nav">
+                            <li class="uk-active"><a href="/">Snapshots</a></li>
+                        </ul>
+                    </div> 
+
+                </nav>
+
+            </div>
+        </div>
+
+        <% for (let row of snapshotdetails) { %>
+            <% var snapshotid = row.emotional_snapshot_id; %>
+
+            <% var snapshotdate = row.created_ts; %>
+            <% var inputdate = new Date(snapshotdate); %>
+            <% const year = inputdate.getFullYear(); %>
+            <% const month = (inputdate.getMonth() + 1).toString().padStart(2, "0"); %>
+            <% const day = inputdate.getDate().toString().padStart(2, "0"); %>
+            <% var formattedDate = `${year}-${month}-${day}`; %>
+
+            <% var snapshotenjoyment = row.enjoyment_level; %>
+
+            <% var snapshotsadness = row.sadness_level; %>
+
+            <% var snapshotanger = row.anger_level; %>
+
+            <% var snapshotcontempt = row.contempt_level; %>
+
+            <% var snapshotdisgust = row.disgust_level; %>
+
+            <% var snapshotfear = row.fear_level; %>
+
+            <% var snapshotsurprise = row.surprise_level; %>
+
+            <% var snapshotdefaulttrigger = row.default_trigger_name %>
+
+            <% var snapshotnotes = row.notes; %>
+
+            <% var snapshotupdatedate = row.modified_ts; %>
+            <% var inputupdatedate = new Date(snapshotupdatedate); %>
+            <% const updateyear = inputupdatedate.getFullYear(); %>
+            <% const updatemonth = (inputupdatedate.getMonth() + 1).toString().padStart(2, "0"); %>
+            <% const updateday = inputupdatedate.getDate().toString().padStart(2, "0"); %>
+            <% var formattedupdateDate = `${updateyear}-${updatemonth}-${updateday}`; %>
+        <% } %>
+        <div class="uk-section uk-background-muted">
+            <div class="uk-container">
+
+                <form method="post" action="/edit/<%= snapshotid %>" class="uk-grid-small" uk-grid>
+                <!--    <div class="uk-width-1-6@s">Enjoyment Level
+                        <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Sadness Level
+                        <input class="uk-input" name="snapshot_sadness" type="text" value="<%= snapshotsadness %>" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Anger Level
+                        <input class="uk-input" name="snapshot_anger" type="text" value="<%= snapshotanger %>" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Contempt Level
+                        <input class="uk-input" name="snapshot_contempt" type="text" value="<%= snapshotcontempt %>" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Disgust Level
+                        <input class="uk-input" name="snapshot_disgust" type="text" value="<%= snapshotdisgust %>" required>
+                    </div>
+                     <div class="uk-width-1-6@s">Fear Level
+                        <input class="uk-input" name="snapshot_fear" type="text" value="<%= snapshotfear %>" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Surprise Level
+                        <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" required>
+                    </div>
+                -->
+                    <div class="uk-width-1-6@s">Common Trigger
+                        <input class="uk-input" name="snapshot_default_trigger" type="text" value="<%= snapshotdefaulttrigger %>" required>
+                    </div>
+                    <div class="uk-width-2-6@s">Notes
+                        <input class="uk-input" name="snapshot_notes" type="text" value="<%= snapshotnotes %>" required>
+                    </div>
+
+
+
+                    <div class="uk-width-auto">
+                        <div uk-form-custom>
+                            <button class="uk-button uk-button-secondary uk-button-large">Update</button>
+                        </div>
+                            <div uk-form-custom>
+                                <button class="uk-button uk-button-danger uk-button-large" formaction="/del/<%= snapshotid %>">Delete</button>
+                            </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </body>
+</html>
