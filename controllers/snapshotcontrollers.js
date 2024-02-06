@@ -5,13 +5,14 @@ const saltRounds = 10;
 async function compareHashPassword(password, hash) { 
     const isSame = await bcrypt.compare(password, hash) 
     console.log((password, hash));
-    console.log(isSame)    
+    console.log(isSame);   
     return isSame;
 }
 
 async function bcryptPassword(password, saltRounds) {
     const hash = await bcrypt.hash(password, saltRounds);
     console.log(hash);
+    return hash;
 }
 
 async function getSavedHashPassword(userid) { 
@@ -259,3 +260,34 @@ exports.getLogout = async (req, res) => {
     });
 };
 
+exports.getRegister = async (req, res) => {
+  res.render("register");
+};
+
+exports.postRegister = async (req, res) => {
+//add check no current user with that email 
+    const new_details = req.body;
+    const plain_password = new_details.userpass;
+
+  const userinsertSQL =
+    "INSERT INTO user (username, password_saltedhash, email, name, date_of_birth, telephone_no, gender) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+  try {
+      const encryptedpassword = await bcryptPassword(plain_password, saltRounds);
+      const vals = [
+        new_details.username,
+        encryptedpassword,
+        new_details.email,
+        new_details.name,
+        new_details.dob,
+        new_details.telephoneno,
+        new_details.gender,
+      ];
+      console.log(encryptedpassword);
+      const [newuser, fields] = await conn.query(userinsertSQL, vals);
+      console.log(newuser);
+    res.redirect('/login');
+  } catch (err) {
+    console.log(err);
+  }
+};
