@@ -77,7 +77,11 @@
                                 <%= row.disgust_level %>
                                 <%= row.fear_level %>
                                 <%= row.surprise_level %>
-                                <%= row.default_trigger_name %>
+                                
+                                <% defaulttriggers.forEach((row) => { %>
+                                        <li><%= row.default_trigger_name %></li>
+                                <% }); %>
+                                
                                 <%= row.notes %>
                                 <% if (row.modified_ts !== null) { %>
                                 <% var rawdate_mod = new Date(row.modified_ts); %>

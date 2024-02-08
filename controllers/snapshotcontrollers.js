@@ -112,7 +112,13 @@ exports.selectSnapshot = async (req, res) => {
             const [snapshotdetails, fielddata1] = await conn.query(snapshotSQL, vals);
             const [defaulttriggerdetails, fielddata2] = await conn.query(defaulttriggerSQL, vals);
 
-            res.render('editsnapshot', { snapshotdetails, defaulttriggerdetails });
+            $f3=>set('defaulttriggerdetails',json_encode($defaulttriggerdetails));
+
+            res.render("editsnapshot", {
+              loggedin: isloggedin,
+              snapshot: snapshotdetails,
+              defaulttriggers: defaulttriggerdetails,
+            });
         } catch (err) {
             console.log(err);
         }

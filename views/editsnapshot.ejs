@@ -31,7 +31,11 @@
             </div>
         </div>
 
-        <% for (let row of snapshotdetails) { %>
+        <% defaulttriggers.forEach((row) => { %>
+                <% row.default_trigger_name %>
+        <% }); %> 
+
+        <% for (let row of snapshot) { %>
             <% var snapshotid = row.emotional_snapshot_id; %>
 
             <% var snapshotdate = row.created_ts; %>
@@ -55,7 +59,7 @@
 
             <% var snapshotsurprise = row.surprise_level; %>
 
-            <% var snapshotdefaulttrigger = row.default_trigger_name %>
+
 
             <% var snapshotnotes = row.notes; %>
 
@@ -70,7 +74,7 @@
             <div class="uk-container">
 
                 <form method="post" action="/edit/<%= snapshotid %>" class="uk-grid-small" uk-grid>
-                <!--    <div class="uk-width-1-6@s">Enjoyment Level
+                <div class="uk-width-1-6@s">Enjoyment Level
                         <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" required>
                     </div>
                     <div class="uk-width-1-6@s">Sadness Level
@@ -91,12 +95,93 @@
                     <div class="uk-width-1-6@s">Surprise Level
                         <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" required>
                     </div>
-                -->
-                    <div class="uk-width-1-6@s">Common Trigger
-                        <input class="uk-input" name="snapshot_default_trigger" type="text" value="<%= snapshotdefaulttrigger %>" required>
+                
+                    <div class="uk-width-2-4" id="root" type="text" >Common Trigger
+
+                        <form>
+                            <label>Select Common Triggers that apply:</label><br>
+                            <!--<input type="hidden" multiple=""
+                            defaulttriggers.forEach(row) => { 
+                                document.createElement('input');
+                                checkbox.type = "checkbox";
+                                checkbox.name = "row.default_trigger_name";
+                                checkbox.value = row.default_trigger_name;
+                                checkbox.id = row.default_trigger_id;
+                                }-->
+                            <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Exercise<br>
+                            <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Sleep<br>
+                            <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Healthy Food<br>
+
+                            <% defaulttriggers.forEach((row) => { %>
+                                        <% row.default_trigger_name %>
+                            <% }); %> 
+                        </form>
+
+                        
                     </div>
+                    
+                    <!--<script> 
+                    window.onload = function(){
+                        var defaulttriggers = defaulttriggers;
+
+                        document.getElementById("defaulttriggers2").innerHTML = defaulttriggers;
+
+                                                defaulttriggers.forEach((defaulttrigger)=>{
+                            const id = 'defaulttrigger-${defaulttrigger}';
+
+                            //create label
+                            const label = document.createElement('label');
+                            label.setAttribute("for", id);
+
+                            const checkbox = document.createElement('input');
+                            checkbox.type = "checkbox";
+                            checkbox.name = "defaulttrigger";
+                            checkbox.value = defaulttrigger.default_trigger_name;
+                            checkbox.id = defaulttriggers.default_trigger_id;
+
+                            label.appendChild(checkbox);
+
+                            label.appendChild(document.createTextNode(defaulttrigger));
+                            document.querySelector("#root").appendChild(label);
+                        });
+                    }
+                    </script>
+                -->
+
+
+                <!--KEEP FOR API-->
+                      <% defaulttriggers.forEach((row) => { %>
+                        <% row.default_trigger_name %>
+                    <% }); %> 
+                    <script>
+                        //const defaulttriggers=JSON.parse(document.getElementById('defaulttriggers').dataset.json);
+                        //const defaulttriggers = ["Comfort Food", "Family", "Exercise" ];
+                        //const defaulttriggers =  $('#$root').value();
+                        const defaulttriggers =  defaulttriggers ;
+                        console.log(defaulttriggers);
+
+                        defaulttriggers.forEach((defaulttrigger)=>{
+                            const id = 'defaulttrigger-${defaulttrigger}';
+
+                            //create label
+                            const label = document.createElement('label');
+                            label.setAttribute("for", id);
+
+                            const checkbox = document.createElement('input');
+                            checkbox.type = "checkbox";
+                            checkbox.name = "defaulttrigger";
+                            checkbox.value = defaulttrigger.default_trigger_name;
+                            checkbox.id = defaulttriggers.default_trigger_id;
+
+                            label.appendChild(checkbox);
+
+                            label.appendChild(document.createTextNode(defaulttrigger));
+                            document.querySelector("#root").appendChild(label);
+                        });
+                    </script>
+
                     <div class="uk-width-2-6@s">Notes
-                        <input class="uk-input" name="snapshot_notes" type="text" value="<%= snapshotnotes %>" required>
+                        <input class="uk-input" name="snapshot_notes" type="text" value="<%= snapshotnotes %>" >
                     </div>
 
 
