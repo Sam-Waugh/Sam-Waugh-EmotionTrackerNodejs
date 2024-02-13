@@ -52,7 +52,7 @@
             <div class="uk-container">
 
                 <% if (loggedin) { %>
-                    <h2 class="uk-heading-small uk-text-left"><%= `${user.name}'s Snapshots `%></h2>
+                    <h2 class="uk-heading-small uk-text-left"><%= `${user.username}'s Snapshots `%></h2>
                 <% } else { %>
                     <h2 class="uk-heading-small uk-text-left">My Snapshots</h2>
                 <% } %>
@@ -77,6 +77,7 @@
                                 <%= row.disgust_level %>
                                 <%= row.fear_level %>
                                 <%= row.surprise_level %>
+                                
                                 
                                 <% defaulttriggers.forEach((row) => { %>
                                         <li><%= row.default_trigger_name %></li>

@@ -11,7 +11,7 @@ router.get('/register', controller.getRegister);
 
 router.post('/new', controller.postNewSnapshot);
 router.post('/edit/:id', controller.updateSnapshot);
-router.post('/del/:id', controller.deleteSnapshot);
+router.delete('/del/:id', controller.deleteSnapshot);
 router.post('/login', controller.postLogin);
 router.post('/register', controller.postRegister);
 
