@@ -59,7 +59,7 @@
                 
                 <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
                     <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                    <% snapshot.forEach((row) => { %>
+                    <% snapshots.forEach((row) => { %>
                     <%  var snapshotid = row.emotional_snapshot_id; %>
                     <% if (loggedin) { %> 
                         <div>
@@ -79,8 +79,8 @@
                                 <%= row.surprise_level %>
                                 
                                 
-                                <% row.forEach((trigger) => { %>
-                                        <li><%= row.default_trigger_id %></li>
+                                <% row.default_trigger_ids.forEach((triggerSelected) => { %>
+                                        <li><%= triggerSelected %></li>
                                 <% }); %>
                                 
                                 <%= row.notes %>

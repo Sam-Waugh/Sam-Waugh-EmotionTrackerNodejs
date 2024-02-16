@@ -101,19 +101,20 @@ exports.getUserSnapshots = async (req, res) => {
             // Both requests are now complete
 
             defaultTriggers = defaultTriggers.data;
-            snapshots = snapshots.data;
-            var test = snapshots;
+            //snapshots = snapshots.data;
+            //var test = snapshots;
             res.render('viewsnapshots', {
               user: userdetails,
               loggedin: isloggedin,
-              defaultTriggers: defaultTriggers.data,
+              defaultTriggers: defaultTriggers.result,
               snapshots: snapshots.data.result,
+              //snapshots: []
             });
           })
         )
-      .catch((error) => {
-       console.log(`Error making API request: ${error}`);
-      });
+      // .catch((error) => {
+      //  console.log(`Error making API request: ${error}`);
+      // });
     // } catch (err) {
     //   console.log(err)
     // }
