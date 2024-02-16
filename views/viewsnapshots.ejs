@@ -79,8 +79,8 @@
                                 <%= row.surprise_level %>
                                 
                                 
-                                <% defaulttriggers.forEach((row) => { %>
-                                        <li><%= row.default_trigger_name %></li>
+                                <% row.forEach((trigger) => { %>
+                                        <li><%= row.default_trigger_id %></li>
                                 <% }); %>
                                 
                                 <%= row.notes %>

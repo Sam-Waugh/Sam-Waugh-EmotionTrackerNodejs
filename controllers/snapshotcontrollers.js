@@ -60,7 +60,7 @@ exports.getUserSnapshots = async (req, res) => {
         // console.log(userinfo);
       //})
 
-      /*    
+      /*
         { data: userdetails },
         { data: snapshotdetails },
         { data: defaulttriggerdetails }) => {
@@ -75,27 +75,49 @@ exports.getUserSnapshots = async (req, res) => {
 
     //const requests = endpoints.map((url) => axios.get(url));
 */
-    axios
-      .all([
-        axios.get("http://localhost:3002/defaultTriggers"),
-        axios.get(`http://localhost:3002/user/${userid}/snapshots`),
-      ])
-      .then(
-        axios.spread((defaultTriggers, snapshots) => {
-          // Both requests are now complete
-          test = defaultTriggers
-          res.render('viewsnapshots', {
-            user: userdetails,
-            loggedin: isloggedin,
-            snapshot: snapshots.data,
-            defaulttriggers: defaultTriggers.data,
-          });
-        })
-      )
-      // .catch((error) => {
-      //   console.log(`Error making API request: ${error}`);
-      // });
-          
+    // try {
+   /* let endpoints = [
+      `http://localhost:3002/defaultTriggers`,
+      `http://localhost:3002/user/${userid}/snapshots`,
+    ];
+
+   await axios.all(endpoints.map((endpoint) => axios.get(endpoint)))
+      .then(await axios.spread((
+        { data: defaultTriggers },
+        { data: snapshots }) => {
+        console.log({ defaultTriggers, snapshots });
+
+      })
+      ).catch((error) => {
+         console.log(`Error making API request: ${error}`);
+      });*/
+      await axios
+        .all([
+          axios.get(`http://localhost:3002/defaultTriggers`),
+          axios.get(`http://localhost:3002/user/${userid}/snapshots`),
+        ])
+        .then(
+          axios.spread((defaultTriggers, snapshots) => {
+            // Both requests are now complete
+
+            defaultTriggers = defaultTriggers.data;
+            snapshots = snapshots.data;
+            var test = snapshots;
+            res.render('viewsnapshots', {
+              user: userdetails,
+              loggedin: isloggedin,
+              defaultTriggers: defaultTriggers.data,
+              snapshots: snapshots.data.result,
+            });
+          })
+        )
+      .catch((error) => {
+       console.log(`Error making API request: ${error}`);
+      });
+    // } catch (err) {
+    //   console.log(err)
+    // }
+    
 
     // try {
 
