@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <% defaulttriggers.forEach((row) => { %>
+        <% defaultTriggers.forEach((row) => { %>
                 <% row.default_trigger_name %>
         <% }); %> 
 
@@ -59,7 +59,9 @@
 
             <% var snapshotsurprise = row.surprise_level; %>
 
-
+            <% row.default_trigger_ids.forEach((triggerSelected) => { %>
+                <li><%= triggerSelected %></li>
+            <% }); %>
 
             <% var snapshotnotes = row.notes; %>
 
@@ -100,21 +102,21 @@
 
                         <form>
                             <label>Select Common Triggers that apply:</label><br>
-                            <!--<input type="hidden" multiple=""
+                            <input type="hidden" multiple=""
                             defaulttriggers.forEach(row) => { 
                                 document.createElement('input');
                                 checkbox.type = "checkbox";
                                 checkbox.name = "row.default_trigger_name";
                                 checkbox.value = row.default_trigger_name;
                                 checkbox.id = row.default_trigger_id;
-                                }-->
-                            <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Exercise<br>
+                                }
+                            <!--<input type="checkbox" name="defaulttrigger" value="default_trigger_id">Exercise<br>
                             <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Sleep<br>
                             <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Healthy Food<br>
 
-                            <% defaulttriggers.forEach((row) => { %>
+                            <% defaultTriggers.forEach((row) => { %>
                                         <% row.default_trigger_name %>
-                            <% }); %> 
+                            <% }); %> --->
                         </form>
 
                         
@@ -150,7 +152,7 @@
 
 
                 <!--KEEP FOR API-->
-                      <% defaulttriggers.forEach((row) => { %>
+                      <% defaultTriggers.forEach((row) => { %>
                         <% row.default_trigger_name %>
                     <% }); %> 
                     <script>

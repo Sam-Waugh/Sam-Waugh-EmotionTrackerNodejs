@@ -63,7 +63,7 @@
                     <%  var snapshotid = row.emotional_snapshot_id; %>
                     <% if (loggedin) { %> 
                         <div>
-                            <a href='/edit/<%= snapshotid %>' class='uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle'>
+                            <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class='uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle'>
                                 <%  var rawdate = new Date(row.created_ts); %>
                                 <%  var itemdate = new Intl.DateTimeFormat('en-GB', 
                                     {dateStyle: 'full', 
