@@ -59,9 +59,9 @@
 
             <% var snapshotsurprise = row.surprise_level; %>
 
-            <% row.default_trigger_ids.forEach((triggerSelected) => { %>
+            <!-- <% row.default_trigger_ids.forEach((triggerSelected) => { %>
                 <li><%= triggerSelected %></li>
-            <% }); %>
+            <% }); %> -->
 
             <% var snapshotnotes = row.notes; %>
 
@@ -71,55 +71,73 @@
             <% const updatemonth = (inputupdatedate.getMonth() + 1).toString().padStart(2, "0"); %>
             <% const updateday = inputupdatedate.getDate().toString().padStart(2, "0"); %>
             <% var formattedupdateDate = `${updateyear}-${updatemonth}-${updateday}`; %>
-        <% } %>
+       
         <div class="uk-section uk-background-muted">
             <div class="uk-container">
 
-                <form method="post" action="/edit/<%= snapshotid %>" class="uk-grid-small" uk-grid>
+                <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="uk-grid-small" uk-grid>
                 <div class="uk-width-1-6@s">Enjoyment Level
-                        <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" required>
+                        <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" required readonly>
                     </div>
                     <div class="uk-width-1-6@s">Sadness Level
-                        <input class="uk-input" name="snapshot_sadness" type="text" value="<%= snapshotsadness %>" required>
+                        <input class="uk-input" name="snapshot_sadness" type="text" value="<%= snapshotsadness %>" required  readonly>
                     </div>
                     <div class="uk-width-1-6@s">Anger Level
-                        <input class="uk-input" name="snapshot_anger" type="text" value="<%= snapshotanger %>" required>
+                        <input class="uk-input" name="snapshot_anger" type="text" value="<%= snapshotanger %>" required readonly>
                     </div>
                     <div class="uk-width-1-6@s">Contempt Level
-                        <input class="uk-input" name="snapshot_contempt" type="text" value="<%= snapshotcontempt %>" required>
+                        <input class="uk-input" name="snapshot_contempt" type="text" value="<%= snapshotcontempt %>" required  readonly>
                     </div>
                     <div class="uk-width-1-6@s">Disgust Level
-                        <input class="uk-input" name="snapshot_disgust" type="text" value="<%= snapshotdisgust %>" required>
+                        <input class="uk-input" name="snapshot_disgust" type="text" value="<%= snapshotdisgust %>" required readonly>
                     </div>
                      <div class="uk-width-1-6@s">Fear Level
-                        <input class="uk-input" name="snapshot_fear" type="text" value="<%= snapshotfear %>" required>
+                        <input class="uk-input" name="snapshot_fear" type="text" value="<%= snapshotfear %>" required readonly>
                     </div>
                     <div class="uk-width-1-6@s">Surprise Level
-                        <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" required>
+                        <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" required readonly>
                     </div>
                 
                     <div class="uk-width-2-4" id="root" type="text" >Common Trigger
 
-                        <form>
+                         <% for (let trigger of defaultTriggers) { %>
+                            <input type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" name="snapshot_trigger_ids" value=<%=trigger.default_trigger_id %> <%= row.default_trigger_ids.includes(trigger.default_trigger_id) ? 'checked' : '' %> >
+                            <label for="trigger_<%= trigger.default_trigger_id %>"><%= trigger.default_trigger_name %> </label><br>
+
+                         <% }%>
+ <% } %>
+                       <!-- <form>
                             <label>Select Common Triggers that apply:</label><br>
+                            <script>
                             <input type="hidden" multiple=""
                             defaulttriggers.forEach(row) => { 
-                                document.createElement('input');
+                                
+                                const id = `row-${row.default_trigger_id}`;
+                                const label = document.createElement('label');
+                                label.setAttribute("for", id);
+
+                                const checkbox = document.createElement('input');
                                 checkbox.type = "checkbox";
                                 checkbox.name = "row.default_trigger_name";
                                 checkbox.value = row.default_trigger_name;
-                                checkbox.id = row.default_trigger_id;
-                                }
-                            <!--<input type="checkbox" name="defaulttrigger" value="default_trigger_id">Exercise<br>
+                                checkbox.id = id;
+
+                                label.appendChild(checkbox);
+                                label.appendChild(document.createTextNode(row.default_trigger_name))
+                                document.querySelector("#root").appendChild(label)
+;                                }
+                            </script>
+
+                        <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Exercise<br>
                             <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Sleep<br>
                             <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Healthy Food<br>
 
                             <% defaultTriggers.forEach((row) => { %>
                                         <% row.default_trigger_name %>
-                            <% }); %> --->
-                        </form>
+                            <% }); %> 
 
-                        
+                        --->
+                        <!-- </form> -->
                     </div>
                     
                     <!--<script> 
@@ -152,14 +170,14 @@
 
 
                 <!--KEEP FOR API-->
-                      <% defaultTriggers.forEach((row) => { %>
+                      <!-- <% defaultTriggers.forEach((row) => { %>
                         <% row.default_trigger_name %>
                     <% }); %> 
                     <script>
                         //const defaulttriggers=JSON.parse(document.getElementById('defaulttriggers').dataset.json);
                         //const defaulttriggers = ["Comfort Food", "Family", "Exercise" ];
                         //const defaulttriggers =  $('#$root').value();
-                        const defaulttriggers =  defaulttriggers ;
+                        const defaulttriggers =  defaultTriggers ;
                         console.log(defaulttriggers);
 
                         defaulttriggers.forEach((defaulttrigger)=>{
@@ -180,7 +198,7 @@
                             label.appendChild(document.createTextNode(defaulttrigger));
                             document.querySelector("#root").appendChild(label);
                         });
-                    </script>
+                    </script> -->
 
                     <div class="uk-width-2-6@s">Notes
                         <input class="uk-input" name="snapshot_notes" type="text" value="<%= snapshotnotes %>" >

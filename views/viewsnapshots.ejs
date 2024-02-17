@@ -24,7 +24,7 @@
                         <ul class="uk-navbar-nav">
                             <li class="uk-active"><a href="/">Snapshots</a></li>
                             <% if (loggedin) { %>
-                                <li class="uk-parent"><a href="/new">Add</a></li>
+                                <li class="uk-parent"><a href="/user/${userid}/new">Add</a></li>
                            <% } %>
                         </ul>
                     </div> 
@@ -59,6 +59,11 @@
                 
                 <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
                     <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+
+                   <!-- <% defaultTriggers.forEach((row) => { %>
+                        <% row.default_trigger_name %>
+                    <% }); %>  --->
+
                     <% snapshots.forEach((row) => { %>
                     <%  var snapshotid = row.emotional_snapshot_id; %>
                     <% if (loggedin) { %> 
@@ -80,8 +85,8 @@
                                 
                                 
                                 <% row.default_trigger_ids.forEach((triggerSelected) => { %>
-                                        <li><%= triggerSelected %></li>
-                                <% }); %>
+                                        <li><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %> </li>
+                                <% }); %> 
                                 
                                 <%= row.notes %>
                                 <% if (row.modified_ts !== null) { %>

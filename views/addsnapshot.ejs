@@ -30,9 +30,51 @@
 
             </div>
         </div>
+  
 
 
         <div class="uk-section uk-background-muted">
+            <div class="uk-container">
+
+                <form method="post" action="/user/<%= userid%>/new" class="uk-grid-small" uk-grid>
+                <div class="uk-width-1-6@s">Enjoyment Level
+                        <input class="uk-input" name="snapshot_enjoyment" type="text" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Sadness Level
+                        <input class="uk-input" name="snapshot_sadness" type="text" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Anger Level
+                        <input class="uk-input" name="snapshot_anger" type="text" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Contempt Level
+                        <input class="uk-input" name="snapshot_contempt" type="text" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Disgust Level
+                        <input class="uk-input" name="snapshot_disgust" type="text" required>
+                    </div>
+                     <div class="uk-width-1-6@s">Fear Level
+                        <input class="uk-input" name="snapshot_fear" type="text" required>
+                    </div>
+                    <div class="uk-width-1-6@s">Surprise Level
+                        <input class="uk-input" name="snapshot_surprise" type="text" required>
+                    </div>
+                
+                    <div class="uk-width-2-4" id="root" type="text" >Common Trigger
+
+                         <% for (let trigger of defaultTriggers) { %>
+                            <input type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" name="snapshot_trigger_ids" value=<%=trigger.default_trigger_id %>  >
+                            <label for="trigger_<%= trigger.default_trigger_id %>"><%= trigger.default_trigger_name %> </label><br>
+
+                         <% }%>
+                    
+                    </div>
+
+                    <div class="uk-width-2-6@s">Notes
+                        <input class="uk-input" name="snapshot_notes" type="text" >
+                    </div>
+
+
+        <!--<div class="uk-section uk-background-muted">
             <div class="uk-container">
 
                 <form method="post" action="/new" class="uk-grid-small" uk-grid>
@@ -40,7 +82,7 @@
                     <input class="uk-input" name="new_details" type="text" placeholder="Enter some details..." required>
                  </div>
 
-                 <!-- <div class="uk-width-1-4@s">
+                  <div class="uk-width-1-4@s">
                     <input class="uk-input" name="new_date" type="date" required>
                  </div>*/ -->
 

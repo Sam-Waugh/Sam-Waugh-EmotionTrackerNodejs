@@ -19,17 +19,17 @@ async function getDefaultTriggers() {
       return triggers;
     })
     .catch((error) => {
-      throw(error);
+      throw error;
     });
 }
 
 exports.getLandingPage = (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   console.log(`User data from session: ${isloggedin}, ${userid}`);
-  res.render('index', {
-      user: userdetails,
-      loggedin: isloggedin
-    });
+  res.render("index", {
+    user: userdetails,
+    loggedin: isloggedin,
+  });
 };
 
 exports.getUserSnapshots = async (req, res) => {
@@ -37,25 +37,24 @@ exports.getUserSnapshots = async (req, res) => {
   console.log(`User data from session: ${isloggedin}, ${userid}`);
 
   if (isloggedin) {
+    await axios
+      .all([
+        axios.get(`http://localhost:3002/defaultTriggers`),
+        axios.get(`http://localhost:3002/user/${userid}/snapshots`),
+      ])
+      .then(
+        axios.spread((defaultTriggers, snapshots) => {
+          // Both requests are now complete
 
-      await axios
-        .all([
-          axios.get(`http://localhost:3002/defaultTriggers`),
-          axios.get(`http://localhost:3002/user/${userid}/snapshots`),
-        ])
-        .then(
-          axios.spread((defaultTriggers, snapshots) => {
-            // Both requests are now complete
-
-            defaultTriggers = defaultTriggers.data;
-            res.render('viewsnapshots', {
-              user: userdetails,
-              loggedin: isloggedin,
-              defaultTriggers: defaultTriggers.result,
-              snapshots: snapshots.data.result,
-            });
-          })
-        )
+          defaultTriggers = defaultTriggers.data;
+          res.render("viewsnapshots", {
+            user: userdetails,
+            loggedin: isloggedin,
+            defaultTriggers: defaultTriggers.result,
+            snapshots: snapshots.data.result,
+          });
+        })
+      );
   } else {
     res.redirect("/login");
   }
@@ -107,24 +106,37 @@ exports.getAddNewSnapshot = async (req, res) => {
   console.log(`User logged in: ${isloggedin}`);
 
   if (isloggedin) {
-    res.render("addsnapshot");
+    const endpoint = `http://localhost:3002/defaultTriggers`;
+    //const endpoint = "https://google.com";
+
+    await axios
+      .get(endpoint)
+      .then((response) => {
+        const data = response.data.result;
+        console.log(data);
+        res.render("addsnapshot", {
+          loggedin: isloggedin,
+          defaultTriggers: data,
+        });
+      })
+      .catch((error) => {
+        console.log(`Error making API request: ${error}`);
+      });
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 };
 
 exports.selectSnapshot = async (req, res) => {
-   const userdetails = ({ isloggedin, userid, username } = req.session);
+  const userdetails = ({ isloggedin, userid, username } = req.session);
   console.log(`User data from session: ${isloggedin}, ${userid}`);
-    const id = req.params.id;
+  const id = req.params.id;
 
   if (isloggedin) {
     await axios
       .all([
         axios.get(`http://localhost:3002/defaultTriggers`),
-        axios.get(
-          `http://localhost:3002/user/${userid}/edit/${id}`
-        ),
+        axios.get(`http://localhost:3002/user/${userid}/edit/${id}`),
         // axios.get("https://google.com"),
         // axios.get("https://google.com"),
       ])
@@ -189,11 +201,47 @@ exports.selectSnapshot = async (req, res) => {
 */
 
 exports.postNewSnapshot = async (req, res) => {
-  const userid = req.session.userid;
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  console.log(`User data from session: ${isloggedin}, ${userid}`);
+  const new_details = req.body;
 
+  if (isloggedin) {
+    /*await axios
+      .all([
+        axios.get(`http://localhost:3002/defaultTriggers`),
+        axios.get(`http://localhost:3002/user/${userid}/new`),
+      ])
+      .then(
+        axios.spread((defaultTriggers, new_details) => {
+          // Both requests are now complete
+
+          defaultTriggers = defaultTriggers.data;
+          // res.render("addsnapshot", {
+          //   user: userdetails,
+          //   loggedin: isloggedin,
+          //   defaultTriggers: defaultTriggers.result,
+          //   new_details: new_details.data.result,
+          // });
+          res.redirect(`/user/${user_id}/edit/${new_details.data.snapshot_id}`);
+        })
+      );*/
+    const endpoint = `http://localhost:3002/user/${userid}/new`;
+      await axios
+        .post(endpoint, new_details)
+        .then((response) => {
+          console.log(response.data);
+          res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
+        })
+        .catch((error) => {
+          console.log(`Error making API request: ${error}`);
+        });
+  } else {
+    res.redirect("/login");
+  }
+  /*
+  const userid = req.session.userid;
   const { new_details, new_date } = req.body;
   const vals = [userid, new_details, new_date];
-
   const insertSQL =
     "INSERT INTO emotional_snapshot (user_id, notes, created_ts) VALUES (?, ?, ?)";
 
@@ -203,10 +251,34 @@ exports.postNewSnapshot = async (req, res) => {
     res.redirect("/");
   } catch (err) {
     console.log(err);
-  }
+  }*/
 };
 
 exports.updateSnapshot = async (req, res) => {
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  console.log(`User data from session: ${isloggedin}, ${userid}`);
+  const id = req.params.id;
+  const new_details = req.body;
+  console.log(req.body.snapshot_trigger_ids);
+  const vals = [new_details, id];
+
+  if (isloggedin) {
+    const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
+    await axios
+      .put(endpoint, vals)
+      .then((response) => {
+        console.log(response.data);
+        res.redirect("/");
+      })
+      .catch((error) => {
+        console.log(`Error making API request: ${error}`);
+      });
+  } else {
+    res.redirect("/");
+  }
+};
+/*
+
   const snapshot_id = req.params.id;
   const snapshot_notes = req.body.snapshot_notes;
   const default_trigger_name = req.body.snapshot_default_trigger;
@@ -264,21 +336,21 @@ exports.updateSnapshot = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-};
+};*/
 
 exports.deleteSnapshot = async (req, res) => {
   const snapshot_id = req.params.id;
 
   const endpoint = `http://localhost:3002/snapshots/${snapshot_id}`;
   await axios
-  .delete(endpoint)
-  .then((response) => {
-     console.log(response.data);
-     res.redirect("/");
-  })
-  .catch((error) => {
-     console.log(`Error making API request: ${error}`);
-  });
+    .delete(endpoint)
+    .then((response) => {
+      console.log(response.data);
+      res.redirect("/");
+    })
+    .catch((error) => {
+      console.log(`Error making API request: ${error}`);
+    });
 };
 
 exports.getLogin = async (req, res) => {
