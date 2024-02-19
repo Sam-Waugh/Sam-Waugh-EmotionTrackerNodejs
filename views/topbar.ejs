@@ -1,0 +1,30 @@
+<header class="mb-auto">
+  <div>
+    <nav class="navbar nav-masthead navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          <img
+            src="/imgs/emotion.png"
+            alt="EmoTrack"
+            style="width: 40px"
+            class="rounded-pill"
+          />
+        </a>
+        <h3 class="float-lg-start mb-0">EmoTrack</h3>
+        <!-- <nav class="nav nav-masthead justify-content-center float-md-end"> -->
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <% if (loggedin) { %>
+          <li class="nav-link">
+            <a href="/user/${userid}/snapshots">View Snapshots</a>
+          </li>
+          <li class="nav-link"><a href="/logout">Logout</a></li>
+          <% } else { %>
+          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link" href="/register">Register</a>
+          <% } %>
+          <a class="nav-link" href="/contact">Contact</a>
+        <!-- </nav> -->
+      </div>
+    </nav>
+  </div>
+</header>
