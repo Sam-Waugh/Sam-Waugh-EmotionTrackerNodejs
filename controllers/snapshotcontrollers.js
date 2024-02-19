@@ -268,7 +268,7 @@ exports.updateSnapshot = async (req, res) => {
       .put(endpoint, vals)
       .then((response) => {
         console.log(response.data);
-        res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
+        res.redirect(`/user/${userid}/edit/${id}`);
       })
       .catch((error) => {
         console.log(`Error making API request: ${error}`);
@@ -349,7 +349,7 @@ exports.deleteSnapshot = async (req, res) => {
       .delete(endpoint)
       .then((response) => {
         console.log(response.data);
-        res.redirect(`user/${userid}/snapshots`);
+        res.redirect(`../snapshots`);
       })
       .catch((error) => {
         console.log(`Error making API request: ${error}`);

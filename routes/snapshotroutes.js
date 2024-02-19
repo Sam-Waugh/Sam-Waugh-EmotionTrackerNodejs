@@ -12,7 +12,7 @@ router.get('/register', controller.getRegister);
 
 router.post('/user/:userid/new', controller.postNewSnapshot);
 router.post('/user/:userid/edit/:id', controller.updateSnapshot);
-router.delete('/user/:userid/del/:id', controller.deleteSnapshot);
+router.post('/user/:userid/del/:id', controller.deleteSnapshot);
 router.post('/login', controller.postLogin);
 router.post('/register', controller.postRegister);
 

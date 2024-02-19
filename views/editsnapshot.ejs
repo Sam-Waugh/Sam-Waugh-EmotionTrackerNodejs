@@ -148,25 +148,21 @@
 
                     <div class="uk-width-auto">
                         <div uk-form-custom>
-                            <button class="uk-button uk-button-secondary uk-button-large">Update</button>
+                            <button id="updateButton" class="uk-button uk-button-secondary uk-button-large">Update</button>
                         </div>
                             <div uk-form-custom>
-                                <form id="deleteForm" method="POST" action="/user/<%= userid %>/del/<%= snapshotid %>">
-                                    <button type="button" class="uk-button uk-button-danger uk-button-large" onclick="deleteSnapshot()">Delete</button>
-                                </form>
+                                //TODO Add an on onclick confirmation?
+                            <div uk-form-custom>
+                                <button class="uk-button uk-button-danger uk-button-large" formaction="/user/<%= userid %>/del/<%= snapshotid %>">Delete</button>
+                            </div>
+                            
                             </div>
                         </div>
-                    <script>
-                        function deleteSnapshot() {
-                            if (confirm("Are you sure you want to delete this Snapshot?")) {
-                                var form = document.getElementById("deleteForm");
-                                form.method = "DELETE";
-                                form.submit();
-                            }
-                        }
-                    </script>
 
                 </form>
+
+
+                
 
             </div>
         </div>
