@@ -83,10 +83,12 @@
                                 <%= row.fear_level %>
                                 <%= row.surprise_level %>
                                 
-                                
-                                <% row.default_trigger_ids.forEach((triggerSelected) => { %>
+                                <% if (row.default_trigger_ids && row.default_trigger_ids.length > 0) { %>
+                                    <% row.default_trigger_ids.forEach((triggerSelected) => { %>
                                         <li><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %> </li>
-                                <% }); %> 
+                                    <% }); %>
+                                <% } %>
+
                                 
                                 <%= row.notes %>
                                 <% if (row.modified_ts !== null) { %>

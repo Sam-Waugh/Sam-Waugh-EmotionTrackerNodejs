@@ -31,179 +31,119 @@
             </div>
         </div>
 
+        <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+
         <% defaultTriggers.forEach((row) => { %>
                 <% row.default_trigger_name %>
         <% }); %> 
 
         <% for (let row of snapshot) { %>
-            <% var snapshotid = row.emotional_snapshot_id; %>
+            <% if (row) { %>
+                <% var snapshotid = row.emotional_snapshot_id; %>
 
-            <% var snapshotdate = row.created_ts; %>
-            <% var inputdate = new Date(snapshotdate); %>
-            <% const year = inputdate.getFullYear(); %>
-            <% const month = (inputdate.getMonth() + 1).toString().padStart(2, "0"); %>
-            <% const day = inputdate.getDate().toString().padStart(2, "0"); %>
-            <% var formattedDate = `${year}-${month}-${day}`; %>
-
-            <% var snapshotenjoyment = row.enjoyment_level; %>
-
-            <% var snapshotsadness = row.sadness_level; %>
-
-            <% var snapshotanger = row.anger_level; %>
-
-            <% var snapshotcontempt = row.contempt_level; %>
-
-            <% var snapshotdisgust = row.disgust_level; %>
-
-            <% var snapshotfear = row.fear_level; %>
-
-            <% var snapshotsurprise = row.surprise_level; %>
-
-            <!-- <% row.default_trigger_ids.forEach((triggerSelected) => { %>
-                <li><%= triggerSelected %></li>
-            <% }); %> -->
-
-            <% var snapshotnotes = row.notes; %>
-
-            <% var snapshotupdatedate = row.modified_ts; %>
-            <% var inputupdatedate = new Date(snapshotupdatedate); %>
-            <% const updateyear = inputupdatedate.getFullYear(); %>
-            <% const updatemonth = (inputupdatedate.getMonth() + 1).toString().padStart(2, "0"); %>
-            <% const updateday = inputupdatedate.getDate().toString().padStart(2, "0"); %>
-            <% var formattedupdateDate = `${updateyear}-${updatemonth}-${updateday}`; %>
+                <% var snapshotdate = row.created_ts; %>
+                <% if (snapshotdate) { %>
+                    <% var inputdate = new Date(snapshotdate); %>
+                    <% const year = inputdate.getFullYear(); %>
+                    <% const month = (inputdate.getMonth() + 1).toString().padStart(2, "0"); %>
+                    <% const day = inputdate.getDate().toString().padStart(2, "0"); %>
+                    <% formattedDate = `${day}-${month}-${year}`; %>
+                <% } %>
        
-        <div class="uk-section uk-background-muted">
+                <% if (row.enjoyment_level) { %>
+                    <% var snapshotenjoyment = row.enjoyment_level ; %>
+                <% } %>
+
+                <% if (row.sadness_level) { %>
+                    <% var snapshotsadness = row.sadness_level; %>
+                <% } %>
+
+                <% if (row.anger_level) { %>
+                    <% var snapshotanger = row.anger_level; %>
+                <% } %>
+
+                <% if (row.contempt_level) { %>
+                    <% var snapshotcontempt = row.contempt_level; %>
+                <% } %>
+
+                <% if (row.disgust_level) { %>
+                    <% var snapshotdisgust = row.disgust_level; %>
+                <% } %>
+
+                <% if (row.fear_level) { %>
+                    <% var snapshotfear = row.fear_level; %>
+                <% } %>
+
+                <% if (row.surprise_level) { %>
+                    <% var snapshotsurprise = row.surprise_level; %>
+                <% } %>
+
+                <% if (row.notes) { %>
+                    <% var snapshotnotes = row.notes; %>
+                <% } %>
+
+                <% if (row.modified_ts) { %>
+                    <% var snapshotupdatedate = row.modified_ts; %>
+                        <% if (snapshotupdatedate) { %>
+                        <% var inputupdatedate = new Date(snapshotupdatedate); %>
+                        <% const updateyear = inputupdatedate.getFullYear(); %>
+                        <% const updatemonth = (inputupdatedate.getMonth() + 1).toString().padStart(2, "0"); %>
+                        <% const updateday = inputupdatedate.getDate().toString().padStart(2, "0"); %>
+                        <% var formattedupdateDate = `${updateday}-${updatemonth}-${updateyear}`; %>
+                    <% } %>
+                <% } %>
+
+                <div class="uk-section uk-background-muted">
             <div class="uk-container">
 
                 <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="uk-grid-small" uk-grid>
+               
+                <div class="uk-width-2-6@s"> Date Snapshot Created: 
+                    <input class="uk-input" name="snapshot_date" type="text" value="<%= formattedDate %>" readonly>
+                </div>
+
                 <div class="uk-width-1-6@s">Enjoyment Level
-                        <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" required readonly>
+                        <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" readonly>
                     </div>
                     <div class="uk-width-1-6@s">Sadness Level
-                        <input class="uk-input" name="snapshot_sadness" type="text" value="<%= snapshotsadness %>" required  readonly>
+                        <input class="uk-input" name="snapshot_sadness" type="text" value="<%= snapshotsadness %>" readonly>
                     </div>
                     <div class="uk-width-1-6@s">Anger Level
-                        <input class="uk-input" name="snapshot_anger" type="text" value="<%= snapshotanger %>" required readonly>
+                        <input class="uk-input" name="snapshot_anger" type="text" value="<%= snapshotanger %>" readonly>
                     </div>
                     <div class="uk-width-1-6@s">Contempt Level
-                        <input class="uk-input" name="snapshot_contempt" type="text" value="<%= snapshotcontempt %>" required  readonly>
+                        <input class="uk-input" name="snapshot_contempt" type="text" value="<%= snapshotcontempt %>"  readonly>
                     </div>
                     <div class="uk-width-1-6@s">Disgust Level
-                        <input class="uk-input" name="snapshot_disgust" type="text" value="<%= snapshotdisgust %>" required readonly>
+                        <input class="uk-input" name="snapshot_disgust" type="text" value="<%= snapshotdisgust %>"  readonly>
                     </div>
                      <div class="uk-width-1-6@s">Fear Level
-                        <input class="uk-input" name="snapshot_fear" type="text" value="<%= snapshotfear %>" required readonly>
+                        <input class="uk-input" name="snapshot_fear" type="text" value="<%= snapshotfear %>" readonly>
                     </div>
                     <div class="uk-width-1-6@s">Surprise Level
-                        <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" required readonly>
+                        <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" readonly>
                     </div>
                 
-                    <div class="uk-width-2-4" id="root" type="text" >Common Trigger
+                    <div class="uk-width-2-4" id="root" type="text" >Common Triggers (select all that apply):
 
                          <% for (let trigger of defaultTriggers) { %>
-                            <input type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" name="snapshot_trigger_ids" value=<%=trigger.default_trigger_id %> <%= row.default_trigger_ids.includes(trigger.default_trigger_id) ? 'checked' : '' %> >
+                            <input type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" name="snapshot_trigger_ids" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> >
                             <label for="trigger_<%= trigger.default_trigger_id %>"><%= trigger.default_trigger_name %> </label><br>
 
                          <% }%>
- <% } %>
-                       <!-- <form>
-                            <label>Select Common Triggers that apply:</label><br>
-                            <script>
-                            <input type="hidden" multiple=""
-                            defaulttriggers.forEach(row) => { 
-                                
-                                const id = `row-${row.default_trigger_id}`;
-                                const label = document.createElement('label');
-                                label.setAttribute("for", id);
 
-                                const checkbox = document.createElement('input');
-                                checkbox.type = "checkbox";
-                                checkbox.name = "row.default_trigger_name";
-                                checkbox.value = row.default_trigger_name;
-                                checkbox.id = id;
-
-                                label.appendChild(checkbox);
-                                label.appendChild(document.createTextNode(row.default_trigger_name))
-                                document.querySelector("#root").appendChild(label)
-;                                }
-                            </script>
-
-                        <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Exercise<br>
-                            <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Sleep<br>
-                            <input type="checkbox" name="defaulttrigger" value="default_trigger_id">Healthy Food<br>
-
-                            <% defaultTriggers.forEach((row) => { %>
-                                        <% row.default_trigger_name %>
-                            <% }); %> 
-
-                        --->
-                        <!-- </form> -->
                     </div>
-                    
-                    <!--<script> 
-                    window.onload = function(){
-                        var defaulttriggers = defaulttriggers;
 
-                        document.getElementById("defaulttriggers2").innerHTML = defaulttriggers;
-
-                                                defaulttriggers.forEach((defaulttrigger)=>{
-                            const id = 'defaulttrigger-${defaulttrigger}';
-
-                            //create label
-                            const label = document.createElement('label');
-                            label.setAttribute("for", id);
-
-                            const checkbox = document.createElement('input');
-                            checkbox.type = "checkbox";
-                            checkbox.name = "defaulttrigger";
-                            checkbox.value = defaulttrigger.default_trigger_name;
-                            checkbox.id = defaulttriggers.default_trigger_id;
-
-                            label.appendChild(checkbox);
-
-                            label.appendChild(document.createTextNode(defaulttrigger));
-                            document.querySelector("#root").appendChild(label);
-                        });
-                    }
-                    </script>
-                -->
-
-
-                <!--KEEP FOR API-->
-                      <!-- <% defaultTriggers.forEach((row) => { %>
-                        <% row.default_trigger_name %>
-                    <% }); %> 
-                    <script>
-                        //const defaulttriggers=JSON.parse(document.getElementById('defaulttriggers').dataset.json);
-                        //const defaulttriggers = ["Comfort Food", "Family", "Exercise" ];
-                        //const defaulttriggers =  $('#$root').value();
-                        const defaulttriggers =  defaultTriggers ;
-                        console.log(defaulttriggers);
-
-                        defaulttriggers.forEach((defaulttrigger)=>{
-                            const id = 'defaulttrigger-${defaulttrigger}';
-
-                            //create label
-                            const label = document.createElement('label');
-                            label.setAttribute("for", id);
-
-                            const checkbox = document.createElement('input');
-                            checkbox.type = "checkbox";
-                            checkbox.name = "defaulttrigger";
-                            checkbox.value = defaulttrigger.default_trigger_name;
-                            checkbox.id = defaulttriggers.default_trigger_id;
-
-                            label.appendChild(checkbox);
-
-                            label.appendChild(document.createTextNode(defaulttrigger));
-                            document.querySelector("#root").appendChild(label);
-                        });
-                    </script> -->
 
                     <div class="uk-width-2-6@s">Notes
                         <input class="uk-input" name="snapshot_notes" type="text" value="<%= snapshotnotes %>" >
                     </div>
 
+                    <div class="uk-width-2-6@s"> Last Updated: 
+                        <input class="uk-input" name="snapshot_date" type="text" value="<%= formattedupdateDate %>" readonly>
+                    </div>
+                    <% } %>
+                    <% } %> 
 
 
                     <div class="uk-width-auto">
@@ -211,9 +151,20 @@
                             <button class="uk-button uk-button-secondary uk-button-large">Update</button>
                         </div>
                             <div uk-form-custom>
-                                <button class="uk-button uk-button-danger uk-button-large" formaction="/del/<%= snapshotid %>">Delete</button>
+                                <form id="deleteForm" method="POST" action="/user/<%= userid %>/del/<%= snapshotid %>">
+                                    <button type="button" class="uk-button uk-button-danger uk-button-large" onclick="deleteSnapshot()">Delete</button>
+                                </form>
                             </div>
-                    </div>
+                        </div>
+                    <script>
+                        function deleteSnapshot() {
+                            if (confirm("Are you sure you want to delete this Snapshot?")) {
+                                var form = document.getElementById("deleteForm");
+                                form.method = "DELETE";
+                                form.submit();
+                            }
+                        }
+                    </script>
 
                 </form>
 

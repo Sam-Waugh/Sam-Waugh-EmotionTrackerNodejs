@@ -170,7 +170,7 @@ exports.selectSnapshot = async (req, res) => {
             console.log(`Error making API request: ${error}`);
           });*/
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 };
 /*
@@ -268,13 +268,13 @@ exports.updateSnapshot = async (req, res) => {
       .put(endpoint, vals)
       .then((response) => {
         console.log(response.data);
-        res.redirect("/");
+        res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
       })
       .catch((error) => {
         console.log(`Error making API request: ${error}`);
       });
   } else {
-    res.redirect("/");
+    res.redirect("/login");
   }
 };
 /*
@@ -339,18 +339,24 @@ exports.updateSnapshot = async (req, res) => {
 };*/
 
 exports.deleteSnapshot = async (req, res) => {
-  const snapshot_id = req.params.id;
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  console.log(`User data from session: ${isloggedin}, ${userid}`);
+  const id = req.params.id;
 
-  const endpoint = `http://localhost:3002/snapshots/${snapshot_id}`;
-  await axios
-    .delete(endpoint)
-    .then((response) => {
-      console.log(response.data);
-      res.redirect("/");
-    })
-    .catch((error) => {
-      console.log(`Error making API request: ${error}`);
-    });
+  if (isloggedin) {
+    const endpoint = `http://localhost:3002/user/${userid}/del/${id}`;
+    await axios
+      .delete(endpoint)
+      .then((response) => {
+        console.log(response.data);
+        res.redirect(`user/${userid}/snapshots`);
+      })
+      .catch((error) => {
+        console.log(`Error making API request: ${error}`);
+      });
+  } else {
+    res.redirect("/login");
+  }
 };
 
 exports.getLogin = async (req, res) => {
