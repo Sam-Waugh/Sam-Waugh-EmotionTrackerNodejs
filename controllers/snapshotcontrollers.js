@@ -360,7 +360,10 @@ exports.deleteSnapshot = async (req, res) => {
 };
 
 exports.getLogin = async (req, res) => {
-  res.render("login");
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  res.render("login", {
+    loggedin: isloggedin,
+  });
 };
 
 exports.postLogin = async (req, res) => {
@@ -384,6 +387,9 @@ exports.postLogin = async (req, res) => {
         session.userid = data.id;
         session.username = data.username;
         console.log(session);
+
+        const orig_rout = session.route;
+
         res.redirect(`/user/${session.userid}/snapshots`);
       } else {
         const data = response.data;
@@ -403,7 +409,10 @@ exports.getLogout = async (req, res) => {
 };
 
 exports.getRegister = async (req, res) => {
-  res.render("register");
+    const userdetails = ({ isloggedin, userid, username } = req.session);
+    res.render("register", {
+      loggedin: isloggedin,
+    });
 };
 
 exports.postRegister = async (req, res) => {

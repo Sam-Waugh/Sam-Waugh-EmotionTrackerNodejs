@@ -1,29 +1,43 @@
 <header class="mb-auto">
   <div>
-    <nav class="navbar nav-masthead navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar nav-masthead navbar-expand-lg navbar-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">
           <img
             src="/imgs/emotion.png"
             alt="EmoTrack"
-            style="width: 40px"
-            class="rounded-pill"
-          />
+            style="width: 75px"
+            height="75px"
+            class="d-inline-block align-text-bottom">
+            EmoTrack
         </a>
-        <h3 class="float-lg-start mb-0">EmoTrack</h3>
+        <!-- <h3 class="float-lg-start mb-0 navbar-brand">EmoTrack</h3> -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <!-- <nav class="nav nav-masthead justify-content-center float-md-end"> -->
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-          <% if (loggedin) { %>
-          <li class="nav-link">
-            <a href="/user/${userid}/snapshots">View Snapshots</a>
-          </li>
-          <li class="nav-link"><a href="/logout">Logout</a></li>
-          <% } else { %>
-          <a class="nav-link" href="/login">Login</a>
-          <a class="nav-link" href="/register">Register</a>
-          <% } %>
-          <a class="nav-link" href="/contact">Contact</a>
-        <!-- </nav> -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto mb- mb-lg-0">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+            <% if (loggedin) { %>
+            <a class="nav-link" href="/user/<%= userid %>/snapshots">View Snapshots</a>            </li>
+            <a class="nav-link" href="/logout">Logout</a>
+            <% } else { %>
+            <a class="nav-link" href="/login">Login</a>
+            <a class="nav-link" href="/register">Register</a>
+            <% } %>
+            <a class="nav-link" href="/contact">Contact</a>
+          </ul>
+          <!-- </nav> -->
+        </div>
       </div>
     </nav>
   </div>
