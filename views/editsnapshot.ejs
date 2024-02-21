@@ -87,56 +87,92 @@
                             <% } %>
 
                     <div class="uk-section uk-background-muted">
-                        <div class="uk-container">
+                        <div class="snapshot">
 
-                            <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="uk-grid-small" uk-grid>
+                            <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="form-horizontal">
                         
-                                <div class="uk-width-2-6@s"> Date Snapshot Created: 
-                                    <input class="uk-input" name="snapshot_date" type="text" value="<%= formattedDate %>" readonly>
-                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-4 mt-4">
+                                            <input type="text" class="form-control" id="snapshot_date" name="snapshot_date" value="<%= formattedDate %>" readonly>
+                                            <label for="snapshot_date" class="form-label">Date Snapshot Created:</label> 
+                                        </div>
+                                    </div>
 
+                                    <div class="col-sm-6">
+                                        <div class="form-floating mb-4 mt-4">
+                                            <input type="text" class="form-control" id="snapshot_update_date" name="snapshot_update_date" value="<%= formattedupdateDate %>" readonly>
+                                            <label for="snapshot_update_date" class="form-label">Last Updated:</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-sm-6 col">
+                                <div class="form-group">
                                 <div class="uk-width-1-6@s">Enjoyment Level
-                                    <input class="uk-input" name="snapshot_enjoyment" type="text" value="<%= snapshotenjoyment %>" readonly>
+                                    <input min="1" max="7"  class="uk-input" name="snapshot_enjoyment" type="range" value="<%= snapshotenjoyment %>" disabled >
                                 </div>
                                 <div class="uk-width-1-6@s">Sadness Level
-                                    <input class="uk-input" name="snapshot_sadness" type="text" value="<%= snapshotsadness %>" readonly>
+                                    <input min="1" max="7"  class="uk-input" name="snapshot_sadness" type="range" value="<%= snapshotsadness %>" disabled>
                                 </div>
                                 <div class="uk-width-1-6@s">Anger Level
-                                    <input class="uk-input" name="snapshot_anger" type="text" value="<%= snapshotanger %>" readonly>
+                                    <input min="1" max="7" class="uk-input" name="snapshot_anger" type="range" value="<%= snapshotanger %>" disabled>
                                 </div>
                                 <div class="uk-width-1-6@s">Contempt Level
-                                    <input class="uk-input" name="snapshot_contempt" type="text" value="<%= snapshotcontempt %>"  readonly>
+                                    <input min="1" max="7" class="uk-input" name="snapshot_contempt" type="range" value="<%= snapshotcontempt %>"  disabled>
                                 </div>
                                 <div class="uk-width-1-6@s">Disgust Level
-                                    <input class="uk-input" name="snapshot_disgust" type="text" value="<%= snapshotdisgust %>"  readonly>
+                                    <input min="1" max="7" class="uk-input" name="snapshot_disgust" type="range" value="<%= snapshotdisgust %>"  disabled>
                                 </div>
                                 <div class="uk-width-1-6@s">Fear Level
-                                    <input class="uk-input" name="snapshot_fear" type="text" value="<%= snapshotfear %>" readonly>
+                                    <input min="1" max="7"  name="snapshot_fear" type="range" value="<%= snapshotfear %>" disabled>
                                 </div>
                                 <div class="uk-width-1-6@s">Surprise Level
-                                    <input class="uk-input" name="snapshot_surprise" type="text" value="<%= snapshotsurprise %>" readonly>
+                                    <input  min="1" max="7" class="uk-input" name="snapshot_surprise" type="range" value="<%= snapshotsurprise %>" disabled>
                                 </div>
-                                
-                                    <div class="uk-width-2-4" id="root" type="text" >Common Triggers (select all that apply):
+                                </div>
+                                </div>
+                                <div class="col-sm-6 col">
+                                <div class="row">
+                                   
+                                        
+                                            <div class="form-label">Emotional Triggers (select all that apply):
+                                            </div>
+                                                <div class="list-group">
+                                                    <% let col = 0 %>
+                                                    <% for (let trigger of defaultTriggers) { %>
+                                                        <% if (col % 2 == 0) { %>
+                                                            <div class="row">
+                                                        <% }%>
+                                                        <div class="col">       
 
-                                        <% for (let trigger of defaultTriggers) { %>
-                                            <input type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" name="snapshot_trigger_ids" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> >
-                                            <label for="trigger_<%= trigger.default_trigger_id %>"><%= trigger.default_trigger_name %> </label><br>
+                                                        <label class="">
+                                                            <input  class="form-check-input me-1" type="checkbox"  id="trigger_<%= trigger.default_trigger_id %>" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> >
+                                                            <%= trigger.default_trigger_name %>
+                                                        </label>
+                                                        </div>
+                                                         <% col++ %>
+                                                        <% if (col % 2 == 0) { %>
+                                                           </div>
+                                                        <% }%>
+                                                       
+                                                    <% }%>
 
-                                        <% }%>
-
+                                         
+                                   
                                     </div>
+                                </div>
+                                </div>
+</div>
 
+                                <div class="form-floating mb-3 mt-3">
+                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" value="<%= snapshotnotes %>" readonly>
+                                    <label for="snapshot_notes" class="form-label">Notes:</label> 
+                                </div>
 
-                                    <div class="uk-width-2-6@s">Notes
-                                        <input class="uk-input" name="snapshot_notes" type="text" value="<%= snapshotnotes %>" >
-                                    </div>
-
-                                    <div class="uk-width-2-6@s"> Last Updated: 
-                                        <input class="uk-input" name="snapshot_date" type="text" value="<%= formattedupdateDate %>" readonly>
-                                    </div>
+                                    
                                     <% } %>
-                                <% } %> 
+                                    <% } %> 
 
 
                                         <div class="uk-width-auto">
@@ -152,7 +188,7 @@
                                             </div>
                                         </div>
 
-                             </form>
+                            </form>
                         </div>
                     </div>
                 </container>

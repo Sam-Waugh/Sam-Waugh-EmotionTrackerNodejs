@@ -74,3 +74,24 @@ body {
 .emo-bg {
     background-color: #ffb84c
 }
+
+.snapshot form .form-control {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #434a52;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+    text-shadow: 0 .1rem .1rem rgba(0, 0, 0, 0.96);
+}
+
+.snapshot form .form-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111111;
+    font-family: cursive;
+    text-shadow: 0 .1rem .1rem rgba(0, 0, 0, 0);
+    opacity: 65%;
+}
+
