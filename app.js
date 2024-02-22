@@ -9,6 +9,16 @@ const app = express();
 
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/public')));
+
+app.use(
+  express.static(
+    path.join(
+      __dirname,
+      "node_modules/@mougli/"
+    )
+  )
+);
+
 app.use(express.urlencoded({ extended: true }));
 app.timeout = 300000;
 app.use(session({

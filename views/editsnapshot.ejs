@@ -13,6 +13,9 @@
         
         <!-- Custom styles for this template -->
         <link rel="stylesheet" type="text/css" href="/css/index.css">
+        <!-- Slider stylesheet-->
+        <link rel="stylesheet" type="text/css" href="/circular-slider/lib/circular-slider.css"/>
+
 
     </head>
 
@@ -24,7 +27,7 @@
                 <container>
 
 
-                    <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+                    <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'long' }; %>
 
                     <% defaultTriggers.forEach((row) => { %>
                             <% row.default_trigger_name %>
@@ -86,7 +89,6 @@
                                 <% } %>
                             <% } %>
 
-                    <div class="uk-section uk-background-muted">
                         <div class="snapshot">
 
                             <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="form-horizontal">
@@ -107,96 +109,125 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                <div class="col-sm-6 col">
-                                <div class="form-group">
-                                <div class="uk-width-1-6@s">Enjoyment Level
-                                    <input min="1" max="7"  class="uk-input" name="snapshot_enjoyment" type="range" value="<%= snapshotenjoyment %>" disabled >
-                                </div>
-                                <div class="uk-width-1-6@s">Sadness Level
-                                    <input min="1" max="7"  class="uk-input" name="snapshot_sadness" type="range" value="<%= snapshotsadness %>" disabled>
-                                </div>
-                                <div class="uk-width-1-6@s">Anger Level
-                                    <input min="1" max="7" class="uk-input" name="snapshot_anger" type="range" value="<%= snapshotanger %>" disabled>
-                                </div>
-                                <div class="uk-width-1-6@s">Contempt Level
-                                    <input min="1" max="7" class="uk-input" name="snapshot_contempt" type="range" value="<%= snapshotcontempt %>"  disabled>
-                                </div>
-                                <div class="uk-width-1-6@s">Disgust Level
-                                    <input min="1" max="7" class="uk-input" name="snapshot_disgust" type="range" value="<%= snapshotdisgust %>"  disabled>
-                                </div>
-                                <div class="uk-width-1-6@s">Fear Level
-                                    <input min="1" max="7"  name="snapshot_fear" type="range" value="<%= snapshotfear %>" disabled>
-                                </div>
-                                <div class="uk-width-1-6@s">Surprise Level
-                                    <input  min="1" max="7" class="uk-input" name="snapshot_surprise" type="range" value="<%= snapshotsurprise %>" disabled>
-                                </div>
-                                </div>
-                                </div>
-                                <div class="col-sm-6 col">
-                                <div class="row">
-                                   
-                                        
-                                            <div class="form-label">Emotional Triggers (select all that apply):
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">
+                                        <div id="legend" class="col-sm-6">
+                                            <ul class="list-unstyled">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <li class="text-start" id="enjoyment_level"><span class="title"><span id="purple">Enjoyment</span><span style="padding-left: 20px" id="purple" class="amount"></span></span></li>
+                                                        <li class="text-start" id="sadness_level"><span class="title"><span id="blue">Sadness</span><span style="padding-left: 20px" id="blue" class="amount"></span></span></li>
+                                                        <li class="text-start" id="anger_level"><span class="title"><span id="green">Anger</span><span style="padding-left: 20px" id="green" class="amount"></span></span></li>
+                                                        <li class="text-start" id="contempt_level"><span class="title"><span id="orange">Contempt</span><span style="padding-left: 20px" id="orange" class="amount"></span></span></li>
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        <li class="text-start" id="disgust_level"><span class="title"><span id="red">Disgust</span><span style="padding-left: 20px" id="red" class="amount"></span></span></li>
+                                                        <li class="text-start" id="fear_level"><span class="title"><span id="red">Fear</span><span style="padding-left: 20px" id="red" class="amount"></span></span></li>
+                                                        <li class="text-start" id="surprise_level"><span class="title"><span id="red">Suprise</span><span style="padding-left: 20px" id="red" class="amount"></span></span></li>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <div id="sliderWrapper" class="col1_2">
+                                            <div id="container" class="clear col-sm-7 mx-auto">
+                                                <div id="sliderWrapper" class="col1_2">
+                                                    <div id="slider"></div>
+                                                    <span id="tip"></span>
+                                                </div>
                                             </div>
-                                                <div class="list-group">
-                                                    <% let col = 0 %>
-                                                    <% for (let trigger of defaultTriggers) { %>
-                                                        <% if (col % 2 == 0) { %>
-                                                            <div class="row">
-                                                        <% }%>
-                                                        <div class="col">       
-
-                                                        <label class="">
-                                                            <input  class="form-check-input me-1" type="checkbox"  id="trigger_<%= trigger.default_trigger_id %>" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> >
-                                                            <%= trigger.default_trigger_name %>
-                                                        </label>
-                                                        </div>
-                                                         <% col++ %>
-                                                        <% if (col % 2 == 0) { %>
-                                                           </div>
-                                                        <% }%>
-                                                       
-                                                    <% }%>
-
-                                         
-                                   
+                                        </div>
                                     </div>
-                                </div>
-                                </div>
-</div>
+                                    </div>
 
-                                <div class="form-floating mb-3 mt-3">
-                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" value="<%= snapshotnotes %>" readonly>
-                                    <label for="snapshot_notes" class="form-label">Notes:</label> 
+
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-label">Emotional Triggers (select all that apply):
+                                                    <div class="list-group body text-start"  style="padding-left: 30px">
+                                                            <% let col = 0 %>
+                                                            <% for (let trigger of defaultTriggers) { %>
+                                                                <% if (col % 2 == 0) { %>
+                                                        <div class="row">
+                                                                <% }%>
+                                                            <div class="col">       
+                                                                <label class="">
+                                                                    <input class= "form-check-input" type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> >
+                                                                        <%= trigger.default_trigger_name %>
+                                                                </label>
+                                                            </div>
+                                                                <% col++ %>
+                                                                <% if (col % 2 == 0) { %>
+                                                        </div>
+                                                                <% }%>
+                                                            
+                                                            <% }%>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12" style="padding-top: 60px">
+                                                <div class="form-floating col-sm-12">
+                                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" value="<%= snapshotnotes %>">
+                                                    <label for="snapshot_notes" class="form-label">Notes:</label> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                     
                                     <% } %>
                                     <% } %> 
-
-
-                                        <div class="uk-width-auto">
-                                            <div uk-form-custom>
-                                                <button id="updateButton" class="uk-button uk-button-secondary uk-button-large">Update</button>
-                                            </div>
-                                            <div uk-form-custom>
-                                                //TODO Add an on onclick confirmation?
-                                                <div uk-form-custom>
-                                                    <button class="uk-button uk-button-danger uk-button-large" formaction="/user/<%= userid %>/del/<%= snapshotid %>">Delete</button>
-                                                </div>
-                                            
-                                            </div>
-                                        </div>
-
+                                <div class="row">
+                                    <div class="d-grid gap-2 col-6 mx-auto mb-5 mt-5">
+                                        <button id="updateButton" class="btn btn-info" type="button">Update</button>
+                                                    //TODO Add an on onclick confirmation?
+                                        <button id="updateButton" class="btn btn-danger" type="button" formaction="/user/<%= userid %>/del/<%= snapshotid %>">Delete</button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
-                    </div>
                 </container>
             </main>
 
             <%-  include('footer.ejs') %>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+                <script type="text/javascript" src="/circular-slider/dist/circular-slider.js"></script>
+                <script>
+            
+                const container = "slider";
+                const updateVal = (divId, val) => document.getElementById(divId).getElementsByClassName("amount")[0].innerHTML = val -1;
+
+                const enjoyment_level = new CircularSlider({container, color: "#5d3b6d",  min: 1, max: 6, step: 1, radius: 200, readonly: true, valueChange: val => updateVal('enjoyment_level', val)});
+                const sadness_level = new CircularSlider({container, color: "#5d3b6d", min: 1, max: 6, step: 1, radius: 175, readonly: true, valueChange: val => updateVal('sadness_level', val)});
+                const anger_level = new CircularSlider({container, color: "#5d3b6d", min: 1, max: 6, step: 1, radius: 150, readonly: true, valueChange: val => updateVal('anger_level', val)});
+                const contempt_level = new CircularSlider({container, color: "#127fc3", min: 1, max: 6, step: 1, radius: 125, readonly: true, valueChange: val => { updateVal('contempt_level', val)}});
+                const disgust_level = new CircularSlider({container, color: "#22a823", min: 1, max: 6, step: 1, radius: 100, readonly: true, valueChange: val => updateVal('disgust_level', val)});
+                const fear_level= new CircularSlider({container, color: "#fd8123", min: 1, max: 6, step: 1, radius: 75, readonly: true, valueChange: val => updateVal('fear_level', val)});
+                const surprise_level = new CircularSlider({ container, color: "#fd3b3f", min: 1, max: 6, step: 1, radius: 50, readonly: true, valueChange: val => updateVal('surprise_level', val)});
+                
+
+                const snapshot_json = '<%- JSON.stringify(snapshot[0]) %>'
+                const snapshot = JSON.parse(snapshot_json)
+
+                updateVal('enjoyment_level', enjoyment_level.currentValue);
+                updateVal('sadness_level', sadness_level.currentValue);
+                updateVal('anger_level', anger_level.currentValue);
+                updateVal('contempt_level', contempt_level.currentValue);
+                updateVal('disgust_level', disgust_level.currentValue);
+                updateVal('fear_level', fear_level.currentValue);
+                updateVal('surprise_level', surprise_level.currentValue);
+
+                enjoyment_level.stepNo = snapshot.enjoyment_level;
+                sadness_level.stepNo = snapshot.sadness_level;
+                anger_level.stepNo = snapshot.anger_level;
+                contempt_level.stepNo = snapshot.contempt_level;
+                disgust_level.stepNo = snapshot.disgust_level;
+                fear_level.stepNo = snapshot.fear_level;
+                surprise_level.stepNo = snapshot.surprise_level;
+            </script>
         </div>
     </body>
 </html>
