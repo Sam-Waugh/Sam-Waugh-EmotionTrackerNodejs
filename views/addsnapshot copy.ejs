@@ -25,114 +25,63 @@
             <%-  include('topbar.ejs') %>
             <main class="px-3">
                 <container>
+                    <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'long' }; %>
 
-
-                    <% var dateOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric", }; %>
+                    <% const inputdate = new Date(); %>
+                    <% let weekday = inputdate.getDate(long); %>
+                    <% let day = inputdate.getDate(); %>
+                    <% let month = inputdate.getMonth(long); %>
+                    <% let year = inputdate.getFullYear(numeric); %>
+                    <% let currentDate = `${weekday}, ${day}-${month}-${year}`; %>
+                    <!-- <% var formattedDate = inputdate.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); %>
+                            <% } %> -->
 
                     <% defaultTriggers.forEach((row) => { %>
                             <% row.default_trigger_name %>
                     <% }); %> 
 
-                    <% for (let row of snapshot) { %>
-                        <% if (row) { %>
-                            <% var snapshotid = row.emotional_snapshot_id; %>
-
-                            <% var snapshotdate = row.created_ts; %>
-                            <% if (snapshotdate) { %>
-                                <% var inputdate = new Date(snapshotdate); %>
-                                <% var formattedDate = inputdate.toLocaleString("en-GB", dateOptions); %>
-                            <% } %>
-
-                            <% if (row.enjoyment_level) { %>
-                                <% var snapshotenjoyment = row.enjoyment_level ; %>
-                            <% } %>
-
-                            <% if (row.sadness_level) { %>
-                                <% var snapshotsadness = row.sadness_level; %>
-                            <% } %>
-
-                            <% if (row.anger_level) { %>
-                                <% var snapshotanger = row.anger_level; %>
-                            <% } %>
-
-                            <% if (row.contempt_level) { %>
-                                <% var snapshotcontempt = row.contempt_level; %>
-                            <% } %>
-
-                            <% if (row.disgust_level) { %>
-                                <% var snapshotdisgust = row.disgust_level; %>
-                            <% } %>
-
-                            <% if (row.fear_level) { %>
-                                <% var snapshotfear = row.fear_level; %>
-                            <% } %>
-
-                            <% if (row.surprise_level) { %>
-                                <% var snapshotsurprise = row.surprise_level; %>
-                            <% } %>
-
-                            <% if (row.notes) { %>
-                                <% var snapshotnotes = row.notes; %>
-                            <% } %>
-
-                            <% if (row.modified_ts) { %>
-                                <% var snapshotupdatedate = row.modified_ts; %>
-                                <% if (snapshotupdatedate) { %>
-                                    <% var inputupdatedate = new Date(snapshotdate); %>
-                                    <% var formattedUpdateDate = inputdate.toLocaleString("en-GB", dateOptions); %>
-                                <% } %>
-                            <% } %>
-                                                       
-
                         <div class="snapshot">
 
-                            <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="form-horizontal">
+                            <form method="post" action="/user/<%= userid%>/new" class="form-horizontal">
                         
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-floating mb-5 mt-5">
-                                            <input type="text" class="form-control" id="snapshot_date" name="snapshot_date" value="<%= formattedDate %>" readonly>
+                                            <input type="text" class="form-control" id="snapshot_date" name="snapshot_date" value="<%= currentDate%>">
                                             <label for="snapshot_date" class="form-label">Date Snapshot Created:</label> 
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="form-floating mb-5 mt-5">
-                                            <input type="text" class="form-control" id="snapshot_update_date" name="snapshot_update_date" value="<%= formattedUpdateDate %>" readonly>
-                                            <label for="snapshot_update_date" class="form-label">Last Updated:</label> 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group row">
-                                        <div id="legend" class="col-sm-6">
-                                            <ul class="list-unstyled">
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <li class="text-start" id="enjoyment_level"><span class="title"><span id="pink">Enjoyment</span><span style="padding-left: 20px" id="pink" class="amount"></span></span></li>
-                                                        <li class="text-start" id="sadness_level"><span class="title"><span id="blue">Sadness</span><span style="padding-left: 20px" id="blue" class="amount"></span></span></li>
-                                                        <li class="text-start" id="anger_level"><span class="title"><span id="red">Anger</span><span style="padding-left: 20px" id="red" class="amount"></span></span></li>
-                                                        <li class="text-start" id="contempt_level"><span class="title"><span id="purple">Contempt</span><span style="padding-left: 20px" id="purple" class="amount"></span></span></li>
+                                            <div id="legend" class="col-sm-6">
+                                                <ul class="list-unstyled">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <li class="text-start" id="enjoyment_level"><span class="title"><span id="pink">Enjoyment</span><span style="padding-left: 20px" id="pink" class="amount"></span></span></li>
+                                                            <li class="text-start" id="sadness_level"><span class="title"><span id="blue">Sadness</span><span style="padding-left: 20px" id="blue" class="amount"></span></span></li>
+                                                            <li class="text-start" id="anger_level"><span class="title"><span id="red">Anger</span><span style="padding-left: 20px" id="red" class="amount"></span></span></li>
+                                                            <li class="text-start" id="contempt_level"><span class="title"><span id="purple">Contempt</span><span style="padding-left: 20px" id="purple" class="amount"></span></span></li>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <li class="text-start" id="disgust_level"><span class="title"><span id="green">Disgust</span><span style="padding-left: 20px" id="green" class="amount"></span></span></li>
+                                                            <li class="text-start" id="fear_level"><span class="title"><span id="yellow">Fear</span><span style="padding-left: 20px" id="yellow" class="amount"></span></span></li>
+                                                            <li class="text-start" id="surprise_level"><span class="title"><span id="cyan">Suprise</span><span style="padding-left: 20px" id="cyan" class="amount"></span></span></li>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <li class="text-start" id="disgust_level"><span class="title"><span id="green">Disgust</span><span style="padding-left: 20px" id="green" class="amount"></span></span></li>
-                                                        <li class="text-start" id="fear_level"><span class="title"><span id="yellow">Fear</span><span style="padding-left: 20px" id="yellow" class="amount"></span></span></li>
-                                                        <li class="text-start" id="surprise_level"><span class="title"><span id="cyan">Suprise</span><span style="padding-left: 20px" id="cyan" class="amount"></span></span></li>
+                                                </ul>
+                                            </div> 
+                                            <div id="sliderWrapper" class="col1_2">
+                                                <div id="container" class="clear col-sm-8 mx-auto">
+                                                    <div id="sliderWrapper" class="col1_2">
+                                                        <div id="slider"></div>
+                                                        <span id="tip"></span>
                                                     </div>
-                                                </div>
-                                            </ul>
-                                        </div>
-                                        <div id="sliderWrapper" class="col1_2">
-                                            <div id="container" class="clear col-sm-8 mx-auto">
-                                                <div id="sliderWrapper" class="col1_2">
-                                                    <div id="slider"></div>
-                                                    <span id="tip"></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
 
                                     <div class="col-sm-6">
@@ -147,38 +96,30 @@
                                                                 <% }%>
                                                             <div class="col">       
                                                                 <label class="">
-                                                                    <input class= "form-check-input" type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" name="snapshot_trigger_ids" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> >
-                                                                        <%= trigger.default_trigger_name %>
+                                                                    <input class= "form-check-input" type="checkbox" id="trigger_<%= trigger.default_trigger_id %>" value="<%= trigger.default_trigger_id %>" <% if (row.default_trigger_ids && row.default_trigger_ids.includes(trigger.default_trigger_id)) { %>checked<% } %> 
+                                                                        <%= trigger.default_trigger_name %> >
                                                                 </label>
                                                             </div>
                                                                 <% col++ %>
                                                                 <% if (col % 2 == 0) { %>
                                                         </div>
                                                                 <% }%>
-                                                            
                                                             <% }%>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-sm-12" style="padding-top: 60px">
-                                                <div class="form-floating col-sm-12">
-                                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" value="<%= snapshotnotes %>">
-                                                    <label for="snapshot_notes" class="form-label">Notes:</label> 
+                                                <div class="col-sm-12" style="padding-top: 60px">
+                                                    <div class="form-floating col-sm-12">
+                                                        <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" value="">
+                                                        <label for="snapshot_notes" class="form-label">Notes:</label> 
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                    
-                                    <% } %>
-                                    <% } %> 
                                 <div class="row mt-5">
                                     <div class="d-grid gap-2 col-6 mx-auto mb-5 mt-5">
-                                        <button id="updateButton" class="btn btn-info" type="submit">Update</button>
-                                                    <!-- //TODO Add an on onclick confirmation? -->
-                                        <button id="deleteButton" class="btn btn-danger" type="submit" formaction="/user/<%= userid %>/del/<%= snapshotid %>">Delete</button>
+                                        <button id="updateButton" class="btn btn-info" type="button">Add</button>
                                     </div>
                                 </div>
                             </form>
