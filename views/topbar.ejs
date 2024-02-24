@@ -28,7 +28,8 @@
           <ul class="navbar-nav ms-auto mb- mb-lg-0">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
             <% if (loggedin) { %>
-            <a class="nav-link" href="/user/<%= userid %>/snapshots">View Snapshots</a>            </li>
+            <a class="nav-link" href="/user/<%= userid %>/snapshots">View Snapshots</a>
+            <a class="nav-link" href="/user/<%= userid %>/new">Add Snapshot</a>
             <a class="nav-link" href="/logout">Logout</a>
             <% } else { %>
             <a class="nav-link" href="/login">Login</a>

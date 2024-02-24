@@ -1,0 +1,122 @@
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>Emo Track</title>
+
+        <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        
+        <!-- Custom styles for this template -->
+        <link rel="stylesheet" type="text/css" href="/css/index.css">
+
+    </head>
+
+    <body class="d-flex text-center text-white emo-bg">
+        <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+            <%-  include('topbar.ejs') %>
+            <main class="px-3">
+                <container>
+
+                            <nav class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+
+
+                                    <ul class="uk-navbar-nav">
+                                        <li class="uk-active"><a href="/">Home</a></li>
+                                        <% if (loggedin) { %>
+                                            <li class="uk-parent"><a href="/user/<%= userid %>/new">Add</a></li>
+                                    </ul>
+                                </div> 
+                                <% } else { %>
+                                    <div class="uk-navbar-right"></div>
+                                        <ul class="uk-navbar-nav">
+                                            <li class="uk-active"><a href="/logout">Logout</a></li>
+                                        </ul>
+                                    </div> 
+                                <% } %>
+                    
+                            </nav>
+
+                        </div>
+                    </div>
+
+
+                    <div class="uk-section uk-background-muted">
+                        <div class="uk-container">
+
+                            <% if (loggedin) { %>
+                                <h2 class="uk-heading-small uk-text-left"><%= `${user.username}'s Snapshots `%></h2>
+                            <% } else { %>
+                                <h2 class="uk-heading-small uk-text-left">My Snapshots</h2>
+                            <% } %>
+                            
+                            <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
+                                <% const dateformat = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+
+                                <% snapshots.forEach((row) => { %>
+                                <%  var snapshotid = row.emotional_snapshot_id; %>
+                                <% if (loggedin) { %> 
+                                    <div>
+                                        <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class='uk-display-block uk-card uk-card-body uk-card-default uk-link-toggle'>
+                                            <%  var rawdate = new Date(row.created_ts); %>
+                                            <%  var itemdate = new Intl.DateTimeFormat('en-GB', 
+                                                {dateStyle: 'full', 
+                                                timeStyle: 'long',
+                                                timeZone: 'UTC',  }, dateformat).format(rawdate); %>
+                                            <h3 class='uk-card-title'><span class='uk-link-heading'><%= itemdate %></span></h3>
+                                            <%= row.enjoyment_level %>
+                                            <%= row.sadness_level %>
+                                            <%= row.anger_level %>
+                                            <%= row.contempt_level %>
+                                            <%= row.disgust_level %>
+                                            <%= row.fear_level %>
+                                            <%= row.surprise_level %>
+                                            
+                                            <% if (row.default_trigger_ids && row.default_trigger_ids.length > 0) { %>
+                                                <% row.default_trigger_ids.forEach((triggerSelected) => { %>
+                                                    <li><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %> </li>
+                                                <% }); %>
+                                            <% } %>
+
+                                            
+                                            <%= row.notes %>
+                                            <% if (row.modified_ts !== null) { %>
+                                            <% var rawdate_mod = new Date(row.modified_ts); %>
+                                            <% var itemdate = new Intl.DateTimeFormat('en-GB', 
+                                                {dateStyle: 'full', 
+                                                timeStyle: 'long',
+                                                timeZone: 'UTC',  }, dateformat).format(rawdate_mod); %>
+                                            <h3 class='uk-card-title'><span class='uk-link-heading'><%= itemdate %></span></h3>
+                                            <% } %>                                        
+                                        </a>
+                                    </div>
+                                    <% } else { %>
+                                        <div>
+                                            <div class='uk-display-block uk-card uk-card-body uk-card-default'>
+                                                <%  var rawdate = new Date(row.created_ts); %>
+                                                <%  var itemdate = new Intl.DateTimeFormat('en-GB', 
+                                                {dateStyle: 'full', 
+                                                timeStyle: 'long',
+                                                timeZone: 'UTC',  }, dateformat).format(rawdate); %>
+                                                <h3 class='uk-card-title'><%= itemdate %></h3>
+                                                <%= row.notes%>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </container>
+            </main>
+
+            <%-  include('footer.ejs') %>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        </div>
+    </body>
+</html>
