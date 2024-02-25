@@ -60,46 +60,23 @@ exports.getUserSnapshots = async (req, res) => {
   }
 };
 
-/*.then((response) => {
-          const userdetails = response.data.result;
-          console.log(userdetails);
-          const username = userdetails[0].name;
-          const userrole = userdetails[0].role;
+// exports.getChart = async (req, res) => {
+//   const userdetails = ({ isloggedin, userid, username } = req.session);
+//   console.log(`User data from session: ${isloggedin}, ${userid}`);
 
-          const session = req.session;
-          session.name = username;
-          session.role = userrole;
-          console.log(session);
+//   if (isloggedin) {
+//           res.render("chart", {
+//             user: userdetails,
+//             loggedin: isloggedin,
+//             defaultTriggers: defaultTriggers.result,
+//             snapshots: snapshots.data.result,
+//           });
+//   } else {
+//     res.redirect("/login");
+//   }
+// };
 
-          userinfo = { name: username, role: userrole };
-          console.log(userinfo);
-        })
-        .catch((error) => {
-          console.log(`Error making API request: ${error}`);
-        });
 
-    } else {
-        res.redirect('/login');
-    }
-
-    const endpoint = `http://localhost:3002/snapshots`;
-        await axios
-          .get(endpoint)
-          .then((response) => {
-              const snapshotdetails = response.data.result;
-              console.log(snapshotdetails);
-              
-              res.render("index", {
-                  user: userinfo,
-                  loggedin: isloggedin,
-                  snapshot: snapshotdetails,
-                  defaulttriggers: defaulttriggerdetails,
-              });
-            })
-          .catch((error) => {
-            console.log(`Error making API request: ${error}`);
-          });    
-};*/
 
 exports.getAddNewSnapshot = async (req, res) => {
   const { isloggedin } = req.session;

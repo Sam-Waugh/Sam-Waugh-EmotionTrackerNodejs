@@ -9,13 +9,14 @@
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
         <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">      
+        <!-- Chart.js  -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js" integrity="sha512-ZwR1/gSZM3ai6vCdI+LVF1zSq/5HznD3ZSTk7kajkaj4D292NLuduDCO1c/NT8Id+jE58KYLKT7hXnbtryGmMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
         <!-- Custom styles for this template -->
         <link rel="stylesheet" type="text/css" href="/css/index.css">
         <!-- Slider stylesheet-->
         <link rel="stylesheet" type="text/css" href="/circular-slider/lib/circular-slider.css"/>
-
+        
 
     </head>
 
@@ -25,7 +26,26 @@
             <%-  include('topbar.ejs') %>
 
             <main class="px-3">
-                <container>                                      
+                <container>            
+                <!-- Define an object to hold emotions mapped by datetime -->
+                <% var emotionsByDatetime = {}; %>
+
+                <!-- Define objects to hold emotions arrays mapped by datetime -->
+                <% var enjoymentArray = []; %>
+                <% var sadnessArray = [];  %>
+                <% var angerArray = []; %>
+                <% var contemptArray = []; %>
+                <% var disgustArray = []; %>
+                <% var fearArray = []; %>
+                <% var surpriseArray = []; %>
+
+
+                    <div class="justify-content-center w-75 mx-auto">
+
+                        <canvas id="canvas" class="w-100 h-100"></canvas>
+
+                    </div>
+                    
                     <% if (loggedin) { %>
                         <h2><%= `${user.username}'s Snapshots `%></h2>
                         <h5>Click a snapshot to edit your triggers and notes</h5>
@@ -34,7 +54,8 @@
                         <% } %>
                         <div class="row row-cols-md-3 g-4 mx-auto text-center">
                             <% var dateOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric", }; %>                        
-                                    <% snapshots.forEach((row) => { %>
+                                    <% snapshots.forEach((row, index) => { %>
+                               
                                 <div class="col-lg-4 ">
                                     <div class="card text-white w-100  h-100 bg-dark">
                                 <% if (row) { %>
@@ -56,50 +77,121 @@
                                 <% } %>
 
 
-                                    <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class="card-body">
-                                        <h5 class="card-title text-white">Created: <%= formattedDate %></h5>
+                                    <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class="remove_underline card-body">
+                                        <path d="M512 455c0 32-25 57-57 57H57c-32 0-57-25-57-57V128c0-31 25-57 57-57h398c32 0 57 26 57 57z" fill="#e0e7ec"/>
+                                        <div class="w-25">
+                                        <svg  xmlns="http://www.w3.org/2000/svg"
+                                            aria-label="Calendar" role="img"
+                                            viewBox="0 0 512 512">
+                                            <path d="M484 0h-47c2 4 4 9 4 14a28 28 0 1 1-53-14H124c3 4 4 9 4 14A28 28 0 1 1 75 0H28C13 0 0 13 0 28v157h512V28c0-15-13-28-28-28z" fill="#27bdca"/>
+
+                                            <g fill="#f3aab9">
+                                            <circle cx="470" cy="142" r="14"/>
+                                            <circle cx="470" cy="100" r="14"/>
+                                            <circle cx="427" cy="142" r="14"/>
+                                            <circle cx="427" cy="100" r="14"/>
+                                            <circle cx="384" cy="142" r="14"/>
+                                            <circle cx="384" cy="100" r="14"/>
+                                            </g>
+
+                                            <text id="month"
+                                            x="32" 
+                                            y="164" 
+                                            fill="#fff" 
+                                            font-family="monospace"
+                                            font-size="140px"
+                                            style="text-anchor: left"><%= inputdate.toLocaleString('default', { month: 'short' }); %></text>
+
+                                            <text id="day"
+                                            x="256" 
+                                            y="400" 
+                                            fill="#66757f" 
+                                            font-family="monospace"
+                                            font-size="256px"
+                                            style="text-anchor: middle"><%= inputdate.getDate(); %></text>
+
+                                            <text id="weekday"
+                                            x="256" 
+                                            y="480" 
+                                            fill="#66757f" 
+                                            font-family="monospace"
+                                            font-size="64px"
+                                            style="text-anchor: middle"><%= inputdate.toLocaleDateString('default', { weekday: 'short' }); %></text>
+                                            </svg>
+                                        </div>
+                                       
                                 
-                                        <p class="card-content text-white">
+                                        <!-- <p class="card-content text-white">
+                                            <div class="levels row">
                                             <% if (row.enjoyment_level) { %>
-                                                <span>Enjoyment:  <%=  row.enjoyment_level ; %> </span>
+                                                <div class=" levels col">
+                                                    <label class="vertical-text">Enjoyment</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.enjoyment_level ; %>" />
+                                               </div>
+
                                             <% } %>
 
                                             <% if (row.sadness_level) { %>
-                                               <span> Sadness:  <%=  row.sadness_level ; %></span>
+                                                 <div class="col">
+                                                    <label class="vertical-text">Sadness</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.sadness_level ; %>" />
+                                               </div>
                                             <% } %>
 
                                             <% if (row.anger_level) { %>
-                                               <span> Anger:  <%=  row.anger_level ; %></span>
+                                               
+                                                <div class="col">
+                                                    <label class="vertical-text">Anger</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.anger_level ; %>" />
+                                               </div>
                                             <% } %>
 
                                             <% if (row.contempt_level) { %>
-                                               <span> Contempt:  <%=  row.contempt_level ; %></span>
+                                               
+                                                <div class="col">
+                                                    <label class="vertical-text">Contempt</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.contempt_level ; %>" />
+                                               </div>
                                             <% } %>
 
                                             <% if (row.disgust_level) { %>
-                                               <span> Disgust:  <%=  row.disgust_level ; %></span>
+                                               
+                                                <div class="col">
+                                                    <label class="vertical-text">Disgust</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.disgust_level ; %>" />
+                                               </div>
                                             <% } %>
 
                                             <% if (row.fear_level) { %>
-                                               <span> Fear:  <%=  row.fear_level ; %></span>
+                                               
+                                                <div class="col">
+                                                    <label class="vertical-text">Fear</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.fear_level ; %>" />
+                                               </div>
                                             <% } %>
 
                                             <% if (row.surprise_level) { %>
-                                               <span> Suprise:  <%=  row.surprise_level ; %></span>
-                                            <% } %>
                                             
-                                            <% if (row.notes) { %>
-                                                <p class="card-text text-white">Notes: <%= row.notes; %> </p>
+                                                <div class="col">
+                                                    <label class="vertical-text">Suprise</label>
+                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.surprise_level ; %>" />
+                                               </div>
                                             <% } %>
-                                        </p>
+                                            </div>
+                              
+                                        </p> -->
+                                        <div class="justify-content-center w-75 mx-auto">
+                                            <canvas id="canvas_<%= index %>" class="w-100 h-100"></canvas>
+                                        </div>
                                         <p class="card-text text-white">
                                             <% if (row.default_trigger_ids && row.default_trigger_ids.length > 0) { %>
                                                 <% row.default_trigger_ids.forEach((triggerSelected) => { %>
-                                                    <li class="text-white "><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %></li>
+                                                   
+                                                    <span class="badge bg-info text-dark " style="font-family: monospace"><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %></span>
+
                                                 <% }); %>
                                             <% } %>
-                                        </p>
-                                        <p class="card-footer text-white">Updated: <%= formattedUpdateDate %></p>             
+                                        </p>          
                                     </a>
                                 </div>
                             </div>
@@ -114,7 +206,184 @@
 
             <%-  include('footer.ejs') %>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>                
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>         
+   
+            <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+            <script>
+
+                // Loop through each snapshot
+                <% var xlabels = [] %>
+                <% snapshots.forEach((snapshot) => { %>
+                    // Extract snapshot datetime and emotions
+                <%    const snapshotDatetime = new Date(snapshot.created_ts).toLocaleDateString();; %>
+                <%    xlabels.push(snapshotDatetime) %>
+                    // Push emotion values to respective arrays
+                <%     enjoymentArray.push({ x: snapshotDatetime, y: snapshot.enjoyment_level }); %>
+                <%     sadnessArray.push({ x: snapshotDatetime, y: snapshot.sadness_level }); %>
+                <%     angerArray.push({ x: snapshotDatetime, y: snapshot.anger_level }); %>
+                <%     contemptArray.push({ x: snapshotDatetime, y: snapshot.contempt_level }); %>
+                <%     disgustArray.push({ x: snapshotDatetime, y: snapshot.disgust_level }); %>
+                <%     fearArray.push({ x: snapshotDatetime, y: snapshot.fear_level }); %>
+                <%     surpriseArray.push({ x: snapshotDatetime, y: snapshot.surprise_level }); %>
+                <% }); %>
+
+                const enjoymentData = '<%- JSON.stringify(enjoymentArray) %>';
+                const sadnessData = '<%- JSON.stringify(sadnessArray) %>';
+                const angerData = '<%- JSON.stringify(angerArray) %>';
+                const contemptData = '<%- JSON.stringify(contemptArray) %>';
+                const disgustData = '<%- JSON.stringify(disgustArray) %>';
+                const fearData = '<%- JSON.stringify(fearArray) %>';
+                const surpriseData = '<%- JSON.stringify(surpriseArray) %>';
+                const xlabelData = '<%- JSON.stringify(xlabels) %>';
+
+                const enjoymentValues = JSON.parse(enjoymentData);
+                const sadnessValues = JSON.parse(sadnessData);
+                const angerValues = JSON.parse(angerData);
+                const contemptValues = JSON.parse(contemptData);
+                const disgusttValues = JSON.parse(disgustData);
+                const fearValues = JSON.parse(fearData);
+                const surpriseValues = JSON.parse(surpriseData);
+                const xlabelValues = JSON.parse(xlabelData);
+
+                const chartdata = {
+                                    labels: xlabelValues,
+                                    datasets: [{
+                                        fill: false,
+                                        data: enjoymentValues,
+                                        label: 'Enjoyment',
+                                        backgroundColor: "#f532e4",
+                                        borderColor: "#f532e4",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    },
+                                {
+                                        fill: false,
+                                        data: sadnessValues,
+                                        label: 'Sadness',
+                                        backgroundColor: "#3263f5",
+                                        borderColor: "#3263f5",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        fill: false,
+                                        data: angerValues,
+                                        label: 'Anger',
+                                        backgroundColor: "#fd3b3f",
+                                        borderColor: "#fd3b3f",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        fill: false,
+                                        data: contemptValues,
+                                        label: 'Contempt',
+                                        backgroundColor: "#5d3b6d",
+                                        borderColor: "#5d3b6d",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        fill: false,
+                                        data: disgusttValues,
+                                        label: 'Disgust',
+                                        backgroundColor: "#00cc66",
+                                        borderColor: "#00cc66",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        fill: false,
+                                        data: fearValues,
+                                        label: 'Fear',
+                                        backgroundColor: "#f5f532",
+                                        borderColor: "#f5f532",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    },
+                                    {
+                                        fill: false,
+                                        data: surpriseValues,
+                                        label: 'Surprise',
+                                        backgroundColor: "#31d2f2",
+                                        borderColor: "#31d2f2",
+                                        type: 'line',
+                                        pointRadius: 1,
+                                        lineTension: 0,
+                                        borderWidth: 2,
+                                    }
+                                ]
+                                };
+
+
+                const chartconfig = {
+                    labels: xlabelValues,
+                    data: chartdata,
+                    options: {
+                        responsive: true,
+                        animation: true,
+                        maintainAspectRatio: true,
+                        tension: 0
+                }
+            }
+
+                const chart = new Chart('canvas', chartconfig);
+
+            </script>
+            <script>
+                // Loop through each snapshot
+                <% snapshots.forEach((snapshot, index) => { %>
+                    const snapshotData_<%= index %> = {
+                        labels: ['Enjoyment', 'Sadness', 'Anger', 'Contempt', 'Disgust', 'Fear', 'Surprise'],
+                        datasets: [{
+                            label: 'Emotion Levels',
+                            data: [
+                                <%= snapshot.enjoyment_level || 0 %>,
+                                <%= snapshot.sadness_level || 0 %>,
+                                <%= snapshot.anger_level || 0 %>,
+                                <%= snapshot.contempt_level || 0 %>,
+                                <%= snapshot.disgust_level || 0 %>,
+                                <%= snapshot.fear_level || 0 %>,
+                                <%= snapshot.surprise_level || 0 %>
+                            ],
+                            fill: true,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            pointBackgroundColor: 'rgb(255, 99, 132)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(255, 99, 132)'
+                        }]
+                    };
+
+                    const config_<%= index %> = {
+                        type: 'radar',
+                        data: snapshotData_<%= index %>,
+                        options: {
+                            elements: {
+                                line: {
+                                    borderWidth: 3
+                                }
+                            }
+                        }
+                    };
+
+                    const chart_<%= index %> = new Chart('canvas_<%= index %>', config_<%= index %>);
+                <% }); %>
+            </script>
+
         </div>
     </body>
 </html>
