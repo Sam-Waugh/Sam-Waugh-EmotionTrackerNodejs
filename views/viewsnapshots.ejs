@@ -27,6 +27,10 @@
 
             <main class="px-3">
                 <container>            
+                <% if (loggedin) { %>
+                <h2 class="mt-3 mb-3"><%= `${user.username}'s Snapshots `%></h2>
+                <h5>Your Emotional Snapshots Over Time</h5>
+
                 <!-- Define an object to hold emotions mapped by datetime -->
                 <% var emotionsByDatetime = {}; %>
 
@@ -40,19 +44,18 @@
                 <% var surpriseArray = []; %>
 
 
-                    <div class="justify-content-center w-75 mx-auto">
+                    <div class="justify-content-center w-75 mx-auto mb-5">
 
                         <canvas id="canvas" class="w-100 h-100"></canvas>
 
                     </div>
                     
-                    <% if (loggedin) { %>
-                        <h2><%= `${user.username}'s Snapshots `%></h2>
+
                         <h5>Click a snapshot to edit your triggers and notes</h5>
                         <% } else { %>
                         <h2>My Snapshots</h2>
                         <% } %>
-                        <div class="row row-cols-md-3 g-4 mx-auto text-center">
+                        <div class="row row-cols-md-3 g-4 mt-3 mb-3 mx-auto text-center">
                             <% var dateOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric", }; %>                        
                                     <% snapshots.forEach((row, index) => { %>
                                
@@ -78,8 +81,10 @@
 
 
                                     <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class="remove_underline card-body">
+                                        <div class="row">
+                                            <div class="col-sm-4">
                                         <path d="M512 455c0 32-25 57-57 57H57c-32 0-57-25-57-57V128c0-31 25-57 57-57h398c32 0 57 26 57 57z" fill="#e0e7ec"/>
-                                        <div class="w-25">
+                                        <div class="w-75">
                                         <svg  xmlns="http://www.w3.org/2000/svg"
                                             aria-label="Calendar" role="img"
                                             viewBox="0 0 512 512">
@@ -119,75 +124,19 @@
                                             style="text-anchor: middle"><%= inputdate.toLocaleDateString('default', { weekday: 'short' }); %></text>
                                             </svg>
                                         </div>
-                                       
-                                
-                                        <!-- <p class="card-content text-white">
-                                            <div class="levels row">
-                                            <% if (row.enjoyment_level) { %>
-                                                <div class=" levels col">
-                                                    <label class="vertical-text">Enjoyment</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.enjoyment_level ; %>" />
-                                               </div>
-
-                                            <% } %>
-
-                                            <% if (row.sadness_level) { %>
-                                                 <div class="col">
-                                                    <label class="vertical-text">Sadness</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.sadness_level ; %>" />
-                                               </div>
-                                            <% } %>
-
-                                            <% if (row.anger_level) { %>
-                                               
-                                                <div class="col">
-                                                    <label class="vertical-text">Anger</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.anger_level ; %>" />
-                                               </div>
-                                            <% } %>
-
-                                            <% if (row.contempt_level) { %>
-                                               
-                                                <div class="col">
-                                                    <label class="vertical-text">Contempt</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.contempt_level ; %>" />
-                                               </div>
-                                            <% } %>
-
-                                            <% if (row.disgust_level) { %>
-                                               
-                                                <div class="col">
-                                                    <label class="vertical-text">Disgust</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.disgust_level ; %>" />
-                                               </div>
-                                            <% } %>
-
-                                            <% if (row.fear_level) { %>
-                                               
-                                                <div class="col">
-                                                    <label class="vertical-text">Fear</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.fear_level ; %>" />
-                                               </div>
-                                            <% } %>
-
-                                            <% if (row.surprise_level) { %>
-                                            
-                                                <div class="col">
-                                                    <label class="vertical-text">Suprise</label>
-                                                    <input type="range" name="Enjoyment" orient="vertical" min="1" max="5" value="<%=  row.surprise_level ; %>" />
-                                               </div>
-                                            <% } %>
-                                            </div>
-                              
-                                        </p> -->
-                                        <div class="justify-content-center w-75 mx-auto">
+                                        </div>
+    
+                                        <div class="col-sm-8">
+                                        <div class="justify-content-center w-100 mx-auto">
                                             <canvas id="canvas_<%= index %>" class="w-100 h-100"></canvas>
                                         </div>
-                                        <p class="card-text text-white">
+                                        </div>
+                                        </div>
+                                        <p class="card-text text-white text-start">
                                             <% if (row.default_trigger_ids && row.default_trigger_ids.length > 0) { %>
                                                 <% row.default_trigger_ids.forEach((triggerSelected) => { %>
                                                    
-                                                    <span class="badge bg-info text-dark " style="font-family: monospace"><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %></span>
+                                                    <span class="badge bg-info text-dark text-start" style="font-family: monospace"><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %></span>
 
                                                 <% }); %>
                                             <% } %>
@@ -336,8 +285,8 @@
                         animation: true,
                         maintainAspectRatio: true,
                         tension: 0
-                }
-            }
+                        }
+                    }
 
                 const chart = new Chart('canvas', chartconfig);
 
@@ -350,21 +299,22 @@
                         datasets: [{
                             label: 'Emotion Levels',
                             data: [
-                                <%= snapshot.enjoyment_level || 0 %>,
-                                <%= snapshot.sadness_level || 0 %>,
-                                <%= snapshot.anger_level || 0 %>,
-                                <%= snapshot.contempt_level || 0 %>,
-                                <%= snapshot.disgust_level || 0 %>,
-                                <%= snapshot.fear_level || 0 %>,
-                                <%= snapshot.surprise_level || 0 %>
+                                <%= snapshot.enjoyment_level || 1 %>,
+                                <%= snapshot.sadness_level || 1 %>,
+                                <%= snapshot.anger_level || 1 %>,
+                                <%= snapshot.contempt_level || 1 %>,
+                                <%= snapshot.disgust_level || 1 %>,
+                                <%= snapshot.fear_level || 1 %>,
+                                <%= snapshot.surprise_level || 1 %>
                             ],
                             fill: true,
-                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                            borderColor: 'rgb(255, 99, 132)',
-                            pointBackgroundColor: 'rgb(255, 99, 132)',
-                            pointBorderColor: '#fff',
+                            backgroundColor: '#ffb84c70',
+                            borderColor: '#ffb84c70',
+                            pointBackgroundColor: ['#f532e4', '#3263f5', '#fd3b3f', '#5d3b6d', '#00cc66', '#f5f532', '#31d2f2' ],
+                            pointBorderColor: ['#f532e4', '#3263f5', '#fd3b3f', '#5d3b6d', '#00cc66', '#f5f532', '#31d2f2' ],
                             pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(255, 99, 132)'
+                            pointHoverBorderColor: 'rgb(255, 99, 132)',
+                            pointRadius: 7
                         }]
                     };
 
@@ -372,13 +322,37 @@
                         type: 'radar',
                         data: snapshotData_<%= index %>,
                         options: {
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                }
+                            },
                             elements: {
                                 line: {
-                                    borderWidth: 3
+                                    borderWidth: 5
                                 }
+                            },
+                            scales: {
+                                r: {
+                                    display: true,
+                                    grid: {
+                                        color: 'white'
+                                    },
+                                    pointLabels: {
+                                        color: 'white'
+                                    },
+                                    ticks: {
+                                        color: 'white',
+                                        showLabelBackdrop: false,
+                                        beginAtZero: true,
+                                        min: 0,
+                                        max: 5,
+                                        stepSize: 1 
+                                    }
+                                    }
+                                }                                              
                             }
-                        }
-                    };
+                        };
 
                     const chart_<%= index %> = new Chart('canvas_<%= index %>', config_<%= index %>);
                 <% }); %>
