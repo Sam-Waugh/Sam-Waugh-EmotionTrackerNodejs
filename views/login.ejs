@@ -21,23 +21,49 @@
 
             <%-  include('topbar.ejs') %>
             <main class="px-3">
+                <h2 class="mb-2">Login to your account</h2>
                 <container>
+                    <section class="gradient-custom" style="border-radius: 15px;">
+                        <div class="d-flex align-items-center h-100">
+                            <div class="container py-5 h-100">
+                                <div class="row justify-content-center align-items-center h-100">
+                                    <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                                        <div class="card" style="border-radius: 15px;">
+                                            <div class="card-body p-5">
 
-                    <form method="post" action="/login" class="uk-grid-small" uk-grid>
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="username" type="text" placeholder="Username" required>
-                        </div>
+                                                <form method="post" action="/login" class="text-dark text-start">
+                                                    <!-- <div class="uk-width-1-2@s">
+                                                        <input class="uk-input" name="username" type="text" placeholder="Username" required>
+                                                    </div> -->
+                                                    <div class="form-outline">
+                                                        <label class="form-label" for="username">Enter your Username:</label>
+                                                        <input type="text" id="username" name="username" class="form-control form-control-lg" required>
+                                                    </div>
+                                                    <div class="form-outline mb-2">
+                                                        <label class="form-label" for="userpass">Enter your Password:</label>
+                                                        <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" required>
+                                                    </div>
+<!-- 
+                                                    <div class="uk-width-1-2@s">
+                                                        <input class="uk-input" name="userpass" type="password" placeholder="Password" required>
+                                                    </div> -->
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="userpass" type="password" placeholder="Password" required>
-                        </div>
-
-                        <div class="uk-width-1-4@s">
-                            <div uk-form-custom>
-                                <button class="uk-button uk-button-default uk-button-large">Login</button>
+                                                    <div class="d-flex justify-content-center mt-5">
+                                                        <button id="loginButton" type="submit" class="btn btn-info btn-block btn-lg gradient-custom-4 text-body">Login</button>
+                                                    </div>
+                                                    <!-- <div class="uk-width-1-4@s">
+                                                        <div uk-form-custom>
+                                                            <button class="uk-button uk-button-default uk-button-large">Login</button>
+                                                        </div>
+                                                    </div> -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </section>
                 </container>
             </main>
 
