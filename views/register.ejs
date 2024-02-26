@@ -22,44 +22,92 @@
             <%-  include('topbar.ejs') %>
             <main class="px-3 my-5 pt-2">
                 <h1 class="display-1 my-5 pt-2">Register Now!</h1>
-                <p class="lead fs-2 mb-5">Track the triggers that impact those emotions and gain the insights to become a happier you.</p>
+                <p class="lead fs-2 mb-5">Create an account to track the triggers that impact those emotions and gain the insights to become a happier you.</p>
                 <container>
+                    <section class="vh-100 bg-image"
+                    style="background-color: rgba(245, 50, 228, 0.7);">
+                    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+                        <div class="container h-100">
+                        <div class="row d-flex justify-content-center align-items-center h-100">
+                            <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                            <div class="card" style="border-radius: 15px;">
+                                <div class="card-body p-5">
+                                    <form method="post" action="/register" class="my-5 text-dark text-start">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="username">Choose a Username</label>
+                                            <input type="text" id="username" class="form-control form-control-lg" required>
+                                        </div>
+                                         <div class="form-outline mb-4">
+                                            <label class="form-label" for="name">Your Name</label>
+                                            <input type="text" id="name" class="form-control form-control-lg" required>
+                                        </div>
+                                         <div class="form-outline mb-4">
+                                            <label class="form-label" for="email">Your Email</label>
+                                            <input type="email" id="email" class="form-control form-control-lg" required>
+                                        </div>
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="userpass">Password</label>
+                                            <input type="password" id="userpass" class="form-control form-control-lg" required>
+                                        </div>
 
-                    <form method="post" action="/register" class="uk-grid-small my-5" uk-grid>
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="username" type="text" placeholder="Username" required>
-                        </div>
+                                        <!-- <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="username" type="text" placeholder="Username" required>
+                                        </div> -->
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="name" type="text" placeholder="Name" required>
-                        </div>
+                                        <!-- <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="name" type="text" placeholder="Name" required>
+                                        </div> -->
+                                       
+<!-- 
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="email" type="text" placeholder="Email Address" required>
+                                        </div> -->
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="email" type="text" placeholder="Email Address" required>
-                        </div>
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="dob" type="text" placeholder="Date Of Birth" required>
+                                        </div>
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="dob" type="text" placeholder="Date Of Birth" required>
-                        </div>
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="telephoneno" type="text" placeholder="Telephone Number" required>
+                                        </div>
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="telephoneno" type="text" placeholder="Telephone Number" required>
-                        </div>
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="gender" type="text" placeholder="Gender" required>
+                                        </div>
+<!-- 
+                                        <div class="uk-width-1-2@s">
+                                            <input class="uk-input" name="userpass" type="password" placeholder="Password" required>
+                                        </div> -->
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="gender" type="text" placeholder="Gender" required>
-                        </div>
+                                        <div class="uk-width-1-4@s">
+                                            <div uk-form-custom>
+                                                <button class="uk-button uk-button-default uk-button-large">Register</button>
+                                            </div>
+                                            
+                                        <div class="form-check d-flex justify-content-center mb-5">
+                                        <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                                        <label class="form-check-label" for="form2Example3g">
+                                            I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+                                        </label>
+                                        </div>
 
-                        <div class="uk-width-1-2@s">
-                            <input class="uk-input" name="userpass" type="password" placeholder="Password" required>
-                        </div>
+                                        <div class="d-flex justify-content-center">
+                                        <button type="button"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                                        </div>
 
-                        <div class="uk-width-1-4@s">
-                            <div uk-form-custom>
-                                <button class="uk-button uk-button-default uk-button-large">Register</button>
+                                        <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
+                                            class="fw-bold text-body"><u>Login here</u></a></p>
+                                        </div>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+               </div>
+            </div>
+        </section>
 
                     
 <section class="vh-100 bg-image"
