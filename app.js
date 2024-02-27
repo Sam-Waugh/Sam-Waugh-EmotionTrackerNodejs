@@ -7,6 +7,8 @@ const path = require('path');
 
 const app = express();
 
+const bodyParser = require("body-parser");
+
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -29,6 +31,11 @@ app.use(session({
 
 app.use('/', router);
 app.set('view engine', 'ejs');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//middleware for parsing JSON in request body
+app.use(express.json());
 
 app.listen(process.env.PORT, (err) => {
     if (err) return console.log(err);

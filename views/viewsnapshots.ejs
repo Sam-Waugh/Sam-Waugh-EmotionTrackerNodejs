@@ -30,8 +30,8 @@
             <main class="px-3">
                 <container>            
                 <% if (loggedin) { %>
-                <h2 class="mt-3 mb-3"><%= `${user.username}'s Snapshots `%></h2>
-                <h5>Your Emotional Snapshots Over Time</h5>
+                <h1 class="mt-3 mb-3"><%= `${user.username}'s Snapshots `%></h1>
+                <h3>Your Emotional Snapshots Over Time</h3>
 
                 <!-- Define an object to hold emotions mapped by datetime -->
                 <% var emotionsByDatetime = {}; %>
@@ -46,8 +46,7 @@
                 <% var surpriseArray = []; %>
 
 
-                <div class="row">
-                    <div class="col-sm-9">
+                    <div class="col-sm-12">
                     <div class="justify-content-center w-90 mx-auto mb-5">
 
                         <canvas id="canvas" class="w-100 h-100"></canvas>
@@ -55,13 +54,13 @@
 
                     </div>
                     </div>
-                    <div class="col-sm-3">
-                    <div class="justify-content-center w-90 mx-auto mb-5">
-
+                    <div class="col-sm-12">
+                    <div class="justify-content-center w-50 mx-auto mb-5">
+                        <h3>Your Top Triggers</h3>
+                        <h5>The split of the Triggers that have impacted your emotions</h5>
                         <canvas id="canvasTriggers" class="w-100 h-100"></canvas>
                         <!-- <input type="month" onchange="filterChart(this)"/> -->
 
-                    </div>
                     </div>
                     </div>
                     
@@ -97,7 +96,7 @@
 
                                     <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class="remove_underline card-body">
                                         <div class="row">
-                                            <div class="col-sm-4">
+                                        <div class="col-sm-4">
                                         <path d="M512 455c0 32-25 57-57 57H57c-32 0-57-25-57-57V128c0-31 25-57 57-57h398c32 0 57 26 57 57z" fill="#e0e7ec"/>
                                         <div class="w-75">
                                         <svg  xmlns="http://www.w3.org/2000/svg"
@@ -173,9 +172,7 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>         
    
             <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-            <script>
-
-                // Loop through each snapshot
+            // Loop through each snapshot
                 <% var xlabels = [] %>
                 <% snapshots.forEach((snapshot) => { %>
                     // Extract snapshot datetime and emotions
@@ -190,6 +187,9 @@
                 <%     fearArray.push({ x: snapshotDatetime, y: snapshot.fear_level }); %>
                 <%     surpriseArray.push({ x: snapshotDatetime, y: snapshot.surprise_level }); %>
                 <% }); %>
+           <script>
+
+    
 
                 const enjoymentData = '<%- JSON.stringify(enjoymentArray) %>';
                 const sadnessData = '<%- JSON.stringify(sadnessArray) %>';
@@ -305,14 +305,77 @@
 
                 const chart = new Chart('canvas', chartconfig);
 
-                // function filterChart(date) {
-                //     console.log(date.value);
-                //     const year = date.value.substring(0, 4);
-                //     console.log(year);
-                //     const month = date.value.substring(5, 7);
-                //     console.log(month);
-                // }
+            </script>
 
+
+            <script>
+            <% var triggerCounts = {}; %>
+                <% snapshots.forEach((snapshot) => { %>
+                    <% if (snapshot.default_trigger_ids) { %>
+                        <% snapshot.default_trigger_ids.forEach((triggerId) => { %>
+                            <% var triggerName = defaultTriggers.find(item => item.default_trigger_id === triggerId ).default_trigger_name; %>
+                            <% triggerCounts[triggerName] = (triggerCounts[triggerName] || 0) + 1; %>
+                        <% });%>
+                    <% } %>
+                <% }); %>
+                
+                const data = {
+                labels: <%- JSON.stringify(Object.keys(triggerCounts)) %>,
+                datasets: [{
+                    label: 'Triggers',
+                    data: <%- JSON.stringify(Object.values(triggerCounts)) %>, 
+                    backgroundColor: [
+                    'rgb(250, 76, 70)',
+                    'rgb(66, 245, 152)',
+                    'rgb(5, 99, 132)',
+                    'rgb(255, 1, 132)',
+                    'rgb(255, 99, 1)',
+                    'rgb(161, 105, 245)',
+                    'rgb(75, 192, 192)',
+                    'rgb(250, 240, 60)',
+                    'rgb(201, 203, 207)',
+                    'rgb(54, 162, 235)'
+                    ],
+                    borderColor: [
+                    'rgb(250, 76, 70)',
+                    'rgb(66, 245, 152)',
+                    'rgb(5, 99, 132)',
+                    'rgb(255, 1, 132)',
+                    'rgb(255, 99, 1)',
+                    'rgb(161, 105, 245)',
+                    'rgb(75, 192, 192)',
+                    'rgb(250, 240, 60)',
+                    'rgb(201, 203, 207)',
+                    'rgb(54, 162, 235)'
+                    ]
+                }]
+                };
+
+                const chartTriggersConfig = {
+                type: 'polarArea',
+                data: data,
+                options: {
+                            plugins: {
+                                legend: {
+                                    display: true
+                                }
+                            },
+                            scales: {
+                                r: {
+                                    display: true,
+                                    ticks: {
+                                        display: false,
+                                        beginAtZero: true,
+                                    },
+                                    title: {
+                                        
+                                    }
+                                }
+                            }
+                        }
+                };
+
+                const chartTriggers = new Chart('canvasTriggers', chartTriggersConfig);
             </script>
             
            

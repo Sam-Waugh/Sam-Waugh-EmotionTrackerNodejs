@@ -1,6 +1,12 @@
 const axios = require("axios");
 const trigger_axios = require("axios");
 const { response } = require("express");
+const { check, validationResult } = require('express-validator');
+const dotenv = require("dotenv").config({ path: "./config.env" });
+
+const nodemailer = require("nodemailer");
+
+const ejs = require("ejs");
 
 async function getTriggerByName(name) {
   let sql = `SELECT default_trigger_id FROM default_trigger 
@@ -415,3 +421,64 @@ exports.postRegister = async (req, res) => {
       console.log(`Error making API request: ${error}`);
     });
 };
+
+exports.getContact = async (req, res) => {
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  res.render(
+    "contact",
+    {
+      loggedin: isloggedin,
+      errors: "",
+    }
+  );
+};
+
+exports.postContact =
+  ("/send",
+  [
+    check("name").notEmpty().withMessage("Name is required"),
+    check("email").isEmail().withMessage("Invalid Email Address"),
+    check("message").notEmpty().withMessage("Message is required"),
+  ],
+  async (req, res) => {
+    const userdetails = ({ isloggedin, userid, username } = req.session);
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.render(
+        "contact",
+        {
+          loggedin: isloggedin,
+          errors: errors.mapped(),
+        }
+      );
+    } else {
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: process.env.GMAILUSERNAME,
+          pass: process.env.GMAILPASSWORD,
+        },
+      });
+
+      const mail_option = {
+        from: req.body.email,
+        to: "sam.waugh90@gmail.com",
+        text: req.body.message,
+      };
+
+      transporter.sendMail(mail_option, (error, info) => {
+        if (error) {
+          console.log(error);
+        } else {
+          res.render("success",
+            {
+              loggedin: isloggedin
+            }
+          );
+        }
+      });
+    }
+  });
+
+ 

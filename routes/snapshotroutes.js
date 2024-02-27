@@ -9,11 +9,13 @@ router.get('/user/:userid/edit/:id', controller.selectSnapshot);
 router.get('/login', controller.getLogin);
 router.get('/logout', controller.getLogout);
 router.get('/register', controller.getRegister);
+router.get('/contact', controller.getContact);
 
 router.post('/user/:userid/new', controller.postNewSnapshot);
 router.post('/user/:userid/edit/:id', controller.updateSnapshot);
 router.post('/user/:userid/del/:id', controller.deleteSnapshot);
 router.post('/login', controller.postLogin);
 router.post('/register', controller.postRegister);
+router.post('/contact', controller.postContact);
 
 module.exports = router;
