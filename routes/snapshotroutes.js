@@ -1,19 +1,21 @@
 const express = require('express');
 const controller = require('../controllers/snapshotcontrollers');
 const router = express.Router();
+const { isLoggedIn } = require('../utils/auth');
+
 
 router.get('/', controller.getLandingPage);
-router.get('/user/:userid/snapshots', controller.getUserSnapshots);
-router.get('/user/:userid/new', controller.getAddNewSnapshot);
-router.get('/user/:userid/edit/:id', controller.selectSnapshot);
-router.get('/login', controller.getLogin);
-router.get('/logout', controller.getLogout);
+router.get('/user/:userid/snapshots', isLoggedIn, controller.getUserSnapshots);
+router.get("/user/:userid/new", isLoggedIn, controller.getAddNewSnapshot);
+router.get("/user/:userid/edit/:id", isLoggedIn, controller.selectSnapshot);
+router.get("/login", controller.getLogin);
+router.get("/logout", isLoggedIn, controller.getLogout);
 router.get('/register', controller.getRegister);
 router.get('/contact', controller.getContact);
 
-router.post('/user/:userid/new', controller.postNewSnapshot);
-router.post('/user/:userid/edit/:id', controller.updateSnapshot);
-router.post('/user/:userid/del/:id', controller.deleteSnapshot);
+router.post("/user/:userid/new", isLoggedIn, controller.postNewSnapshot);
+router.post("/user/:userid/edit/:id", isLoggedIn, controller.updateSnapshot);
+router.post("/user/:userid/del/:id", isLoggedIn, controller.deleteSnapshot);
 router.post('/login', controller.postLogin);
 router.post('/register', controller.postRegister);
 router.post('/contact', controller.postContact);
