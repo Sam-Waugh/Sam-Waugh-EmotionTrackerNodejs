@@ -176,10 +176,16 @@ exports.getLogin = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   res.render("login", {
     loggedin: isloggedin,
+    error: null
   });
 };
 
 exports.postLogin = async (req, res) => {
+  const errors = validationResult(req);
+  console.log(errors.array());
+  if (!errors.array()) {
+    return res.status(422).render("login", { error: errors.array()[0].msg });
+  }
   const vals = ({ username: username, userpass: userpass } = req.body);
   console.log(vals);
   const endpoint = `http://localhost:3002/login`;
@@ -234,6 +240,7 @@ exports.getRegister = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   res.render("register", {
     loggedin: isloggedin,
+    error: null,
   });
 };
 
@@ -258,6 +265,13 @@ exports.postRegister = async (req, res) => {
       
     )
     .then((response) => {
+      if (response.status > 400) {
+        res.render('register', {
+            loggedin: false,
+            error: response.data.message
+        }
+        )
+      } 
       //const data = response.data.result;
       console.log(response.data);
       res.redirect("/login");

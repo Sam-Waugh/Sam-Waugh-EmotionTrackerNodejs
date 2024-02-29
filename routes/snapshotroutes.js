@@ -2,6 +2,8 @@ const express = require('express');
 const controller = require('../controllers/snapshotcontrollers');
 const router = express.Router();
 const { isLoggedIn } = require('../utils/auth');
+const { check } = require('express-validator');
+const { loginValidationRules, validate } = require("../utils/validator.js");
 
 
 router.get('/', controller.getLandingPage);
@@ -16,7 +18,7 @@ router.get('/contact', controller.getContact);
 router.post("/user/:userid/new", isLoggedIn, controller.postNewSnapshot);
 router.post("/user/:userid/edit/:id", isLoggedIn, controller.updateSnapshot);
 router.post("/user/:userid/del/:id", isLoggedIn, controller.deleteSnapshot);
-router.post('/login', controller.postLogin);
+router.post('/login', loginValidationRules(), validate, controller.postLogin);
 router.post('/register', controller.postRegister);
 router.post('/contact', controller.postContact);
 
