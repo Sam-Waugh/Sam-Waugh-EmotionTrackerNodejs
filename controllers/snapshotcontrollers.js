@@ -83,6 +83,7 @@ exports.getAddNewSnapshot = async (req, res) => {
       res.render("addsnapshot", {
         loggedin: isloggedin,
         defaultTriggers: data,
+        errors: []
       });
     })
     .catch((error) => {
@@ -110,6 +111,7 @@ exports.selectSnapshot = async (req, res) => {
           loggedin: isloggedin,
           defaultTriggers: defaultTriggers.result,
           snapshot: snapshot.data.result,
+          errors: []
         });
       })
     )
@@ -119,6 +121,11 @@ exports.selectSnapshot = async (req, res) => {
 };
 
 exports.postNewSnapshot = async (req, res) => {
+   const errors = validationResult(req);
+   console.log(errors.array());
+   if (!errors.array()) {
+     return res.status(422).render("register", { error: errors.array().msg });
+   }
   const userdetails = ({ isloggedin, userid, username } = req.session);
   console.log(`User data from session: ${isloggedin}, ${userid}`);
   const new_details = req.body;
@@ -176,7 +183,7 @@ exports.getLogin = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   res.render("login", {
     loggedin: isloggedin,
-    error: null
+    errors: []
   });
 };
 
@@ -240,12 +247,16 @@ exports.getRegister = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   res.render("register", {
     loggedin: isloggedin,
-    error: null,
+    errors: [],
   });
 };
 
 exports.postRegister = async (req, res) => {
-  //add check no current user with that email
+  const errors = validationResult(req);
+  console.log(errors.array());
+  if (!errors.array()) {
+    return res.status(422).render("register", { error: errors.array().msg });
+  }
   const new_details = req.body;
   const plain_password = new_details.userpass;
   console.log(plain_password);

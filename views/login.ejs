@@ -33,30 +33,21 @@
                                             <div class="card-body p-5">
 
                                                 <form method="post" action="/login" class="text-dark text-start">
-                                                    <!-- <div class="uk-width-1-2@s">
-                                                        <input class="uk-input" name="username" type="text" placeholder="Username" required>
-                                                    </div> -->
+
+                                                    <span id="message"></span>
                                                     <div class="form-outline">
-                                                        <label class="form-label" for="username">Enter your Username:<span id="message"></span></label>
+                                                        <label class="form-label" for="username">Enter your Username:</label>
                                                         <input type="text" id="username" name="username" class="form-control form-control-lg" required>
                                                     </div>
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="userpass">Enter your Password:</label>
                                                         <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" required>
                                                     </div>
-<!-- 
-                                                    <div class="uk-width-1-2@s">
-                                                        <input class="uk-input" name="userpass" type="password" placeholder="Password" required>
-                                                    </div> -->
 
                                                     <div class="d-flex justify-content-center mt-5">
                                                         <button id="loginButton" type="submit" class="btn btn-info btn-block btn-lg gradient-custom-4 text-body">Login</button>
                                                     </div>
-                                                    <!-- <div class="uk-width-1-4@s">
-                                                        <div uk-form-custom>
-                                                            <button class="uk-button uk-button-default uk-button-large">Login</button>
-                                                        </div>
-                                                    </div> -->
+
                                                 </form>
                                             </div>
                                         </div>
@@ -65,14 +56,22 @@
                             </div>
                         </div>
 
-                        <% if (error) { %>
-                            <script>
-                                const msg = '<%= error %>';
-                                $('#message').html(msg)
-                                .css('color', 'red')
-                                .show()
-                                .fadeOut(7000);
-                            </script>                                
+                        <% if (errors) { %>
+                        <script>
+                            var errors = JSON.parse('<%- JSON.stringify(errors) %>')
+                            errors.forEach(function(error) {
+                                for (var field in error) {
+                                console.log(field + ': ' + error[field]);
+                                //const msg = field + ': ' + error[field];
+                                document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
+                                }
+                            });
+                            const msg = ' <%= errors %>';
+                            $('#message')
+                            .css('color', 'red')
+                            .show()
+                            .fadeOut(7000);
+                        </script>                                
                         <% } %>
 
                     </section>

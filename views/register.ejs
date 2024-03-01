@@ -109,10 +109,19 @@
                                 </div>
                             </div>
                         </div>
-                                   <% if (error) { %>
+
+                            <% if (errors) { %>
                             <script>
-                                const msg = ' <%= error %>';
-                                $('#message').html(msg)
+                                var errors = JSON.parse('<%- JSON.stringify(errors) %>')
+                                errors.forEach(function(error) {
+                                    for (var field in error) {
+                                    console.log(field + ': ' + error[field]);
+                                    //const msg = field + ': ' + error[field];
+                                    document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
+                                    }
+                                });
+                                const msg = ' <%= errors %>';
+                                $('#message')
                                 .css('color', 'red')
                                 .show()
                                 .fadeOut(7000);
