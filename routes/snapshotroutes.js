@@ -1,12 +1,12 @@
 const express = require('express');
 const controller = require('../controllers/snapshotcontrollers');
 const router = express.Router();
-const { isLoggedIn } = require('../utils/auth');
+const { isLoggedIn } = require('../middleware/auth.js');
 const { check } = require('express-validator');
 const {
   validate,
-  loginValidationRules, registerValidationRules, contactValidationRules, snapshotValidationRules
-} = require("../utils/validator.js");
+  loginValidationRules, registerValidationRules, contactValidationRules
+} = require("../middleware/validator.js");
 
 
 router.get('/', controller.getLandingPage);
@@ -20,14 +20,10 @@ router.get('/contact', controller.getContact);
 
 router.post(
   "/user/:userid/new",
-  snapshotValidationRules(),
-  validate,
   isLoggedIn,
   controller.postNewSnapshot
 );
-router.post("/user/:userid/edit/:id",
-    snapshotValidationRules(),
-  validate, isLoggedIn, controller.updateSnapshot);
+router.post("/user/:userid/edit/:id", isLoggedIn, controller.updateSnapshot);
 router.post("/user/:userid/del/:id", isLoggedIn, controller.deleteSnapshot);
 router.post('/login', loginValidationRules(), validate, controller.postLogin);
 router.post(

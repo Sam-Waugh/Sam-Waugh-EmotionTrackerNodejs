@@ -53,16 +53,19 @@ const contactValidationRules = () => {
     ];
 };
 
-const snapshotValidationRules = () => {
-  return [
-    body("notes")
-      .isLength({ min: 1, max: 32767 }).withMessage("Notes must be at least 1 character long and less than 32767 characters!")
-      .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
-      .withMessage(
-        "Notes must only contain alphanumeric characters, spaces and special characters!"
-      ),
-  ];
-};
+// const snapshotValidationRules = () => {
+//   return [
+//     body("notes")
+//       .isLength({ max: 65535 })
+//       .withMessage(
+//         "Notes must be at least 1 character long and less than 32767 characters!"
+//       )
+//       .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
+//       .withMessage(
+//         "Notes must only contain alphanumeric characters, spaces and special characters!"
+//       ),
+//   ];
+// };
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -91,6 +94,5 @@ module.exports = {
     loginValidationRules,
     registerValidationRules,
     contactValidationRules,
-    snapshotValidationRules,
     validate,
 };

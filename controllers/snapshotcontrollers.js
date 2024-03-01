@@ -1,19 +1,19 @@
 const axios = require("axios");
 const trigger_axios = require("axios");
 const { response } = require("express");
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require("express-validator");
 const dotenv = require("dotenv").config({ path: "./config.env" });
 const nodemailer = require("nodemailer");
 const ejs = require("ejs");
 const config = {
   headers: {
     "x-api-userid": process.env.APIUSERID,
-    "x-api-key": process.env.APISIGNATURE
+    "x-api-key": process.env.APISIGNATURE,
   },
 };
 
 // async function getTriggerByName(name) {
-//   let sql = `SELECT default_trigger_id FROM default_trigger 
+//   let sql = `SELECT default_trigger_id FROM default_trigger
 //                     WHERE default_trigger_name = ?`;
 //   const [rows, fields] = await conn.query(sql, [name]);
 //   return rows[0];
@@ -83,7 +83,7 @@ exports.getAddNewSnapshot = async (req, res) => {
       res.render("addsnapshot", {
         loggedin: isloggedin,
         defaultTriggers: data,
-        errors: []
+        errors: [],
       });
     })
     .catch((error) => {
@@ -111,7 +111,7 @@ exports.selectSnapshot = async (req, res) => {
           loggedin: isloggedin,
           defaultTriggers: defaultTriggers.result,
           snapshot: snapshot.data.result,
-          errors: []
+          errors: [],
         });
       })
     )
@@ -120,57 +120,86 @@ exports.selectSnapshot = async (req, res) => {
     });
 };
 
-exports.postNewSnapshot = async (req, res) => {
-  const errors = validationResult(req);
-  console.log(errors.array());
-  //  if (errors.array()) {
-  //    return res
-  //      .status(422)
-  //      .render("addsnapshot", {
-  //        errors: errors.array().msg,
-  //        loggedin: isloggedin,
-  //        defaultTriggers: data,
-  //      });
-  //  }
-  const userdetails = ({ isloggedin, userid, username } = req.session);
-  console.log(`User data from session: ${isloggedin}, ${userid}`);
-  const new_details = req.body;
+exports.postNewSnapshot =
+  ("add",
+  [
+    check("notes")
+      .isLength({ max: 65535 })
+      .withMessage("Notes must be less than 65535 characters!"),
+    check("notes")
+      .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
+      .withMessage(
+        "Notes must only contain alphanumeric characters, spaces and special characters!"
+      ),
+  ],
+  async (req, res) => {
+    const userdetails = ({ isloggedin, userid, username } = req.session);
+    console.log(`User data from session: ${isloggedin}, ${userid}`);
+    const new_details = req.body;
+    const errors = validationResult(req);
+    console.log(errors.array());
 
-  const endpoint = `http://localhost:3002/user/${userid}/new`;
-  await axios
-    .post(endpoint, new_details, config)
-    .then((response) => {
-      console.log(response.data);
-      res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
-    })
-    .catch((error) => {
-      console.log(`Error making API request: ${error}`);
-    });
-};
+    const endpoint = `http://localhost:3002/user/${userid}/new`;
+    await axios
+      .post(endpoint, new_details, config)
+      .then((response) => {
+        console.log(response.data);
+        if (!errors.isEmpty()) {
+          res.render("edit", {
+            loggedin: isloggedin,
+            errors: errors.mapped(),
+            defaultTriggers: defaultTriggers.data.result,
+          });
+        } else {
+          res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
+        }
+      })
+      .catch((error) => {
+        console.log(`Error making API request: ${error}`);
+      });
+  });
 
-exports.updateSnapshot = async (req, res) => {
-  // console.log(errors.array());
-  // if (!errors.array()) {
-  //   return res.status(422).render("editsnapshot", { error: errors.array().msg });
-  // }
-  const userdetails = ({ isloggedin, userid, username } = req.session);
-  console.log(`User data from session: ${isloggedin}, ${userid}`);
-  const id = req.params.id;
-  const new_details = req.body;
-  console.log(req.body.snapshot_trigger_ids);
-  const vals = [new_details, id];
+exports.updateSnapshot =
+  ("edit",
+  [
+    check("notes")
+      .isLength({ max: 65535 })
+      .withMessage("Notes must be less than 65535 characters!"),
+    check("notes")
+      .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
+      .withMessage(
+        "Notes must only contain alphanumeric characters, spaces and special characters!"
+      ),
+  ],
+  async (req, res) => {
+    const userdetails = ({ isloggedin, userid, username } = req.session);
+    console.log(`User data from session: ${isloggedin}, ${userid}`);
+    const id = req.params.id;
+    const new_details = req.body;
+    console.log(req.body.snapshot_trigger_ids);
+    const vals = [new_details, id];
 
-  const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
-  await axios
-    .put(endpoint, vals, config)
-    .then((response) => {
-      console.log(response.data);
-      res.redirect(`/user/${userid}/edit/${id}`);
-    })
-    .catch((error) => {
-      console.log(`Error making API request: ${error}`);
-    });
-};
+    const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
+    await axios
+      .put(endpoint, vals, config)
+      .then((response) => {
+        const errors = validationResult(req);
+        console.log(response.data);
+
+        if (!errors.isEmpty()) {
+          res.render("edit", {
+            loggedin: isloggedin,
+            errors: errors.mapped(),
+            defaultTriggers: defaultTriggers.data.result,
+          });
+        } else {
+          res.redirect(`/user/${userid}/edit/${id}`);
+        }
+      })
+      .catch((error) => {
+        console.log(`Error making API request: ${error}`);
+      });
+  });
 
 exports.deleteSnapshot = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
@@ -193,7 +222,7 @@ exports.getLogin = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   res.render("login", {
     loggedin: isloggedin,
-    errors: []
+    errors: [],
   });
 };
 
@@ -208,16 +237,12 @@ exports.postLogin = async (req, res) => {
   const endpoint = `http://localhost:3002/login`;
 
   await axios
-    .post(
-      endpoint,
-      vals,
-      {
-        validateStatus: (status) => {
-          return status < 500;
-        },
-        headers: config["headers"],
-      }
-    )
+    .post(endpoint, vals, {
+      validateStatus: (status) => {
+        return status < 500;
+      },
+      headers: config["headers"],
+    })
     .then((response) => {
       const status = response.status;
       if (status === 200) {
@@ -274,25 +299,19 @@ exports.postRegister = async (req, res) => {
   const endpoint = `http://localhost:3002/register`;
 
   await axios
-    .post(
-      endpoint,
-      new_details,
-      {
-        validateStatus: (status) => {
-          return status < 500;
-        },
-        headers: config["headers"],
+    .post(endpoint, new_details, {
+      validateStatus: (status) => {
+        return status < 500;
       },
-      
-    )
+      headers: config["headers"],
+    })
     .then((response) => {
       if (response.status > 400) {
-        res.render('register', {
-            loggedin: false,
-            error: response.data.message
-        }
-        )
-      } 
+        res.render("register", {
+          loggedin: false,
+          error: response.data.message,
+        });
+      }
       //const data = response.data.result;
       console.log(response.data);
       res.redirect("/login");
@@ -304,13 +323,10 @@ exports.postRegister = async (req, res) => {
 
 exports.getContact = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
-  res.render(
-    "contact",
-    {
-      loggedin: isloggedin,
-      errors: "",
-    }
-  );
+  res.render("contact", {
+    loggedin: isloggedin,
+    errors: "",
+  });
 };
 
 exports.postContact = async (req, res) => {
@@ -334,13 +350,9 @@ exports.postContact = async (req, res) => {
     if (error) {
       console.log(error);
     } else {
-      res.render("success",
-        {
-          loggedin: isloggedin
-        }
-      );
+      res.render("success", {
+        loggedin: isloggedin,
+      });
     }
   });
 };
-
- 

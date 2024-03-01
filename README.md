@@ -9,3 +9,5 @@ GMAILUSERNAME
 GMAILPASSWORD
 
 variables
+
+then run npm install and npm start

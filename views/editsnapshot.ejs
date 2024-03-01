@@ -17,7 +17,6 @@
         <!-- Slider stylesheet-->
         <link rel="stylesheet" type="text/css" href="/circular-slider/lib/circular-slider.css"/>
 
-
     </head>
 
     <body class="d-flex text-center text-white emo-bg">
@@ -164,7 +163,7 @@
 
                                             <div class="col-sm-12" style="padding-top: 60px">
                                                 <div class="form-floating col-sm-12">
-                                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" style="height: 7rem;" value="<%= snapshotnotes %>">
+                                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" style="height: 7rem;"  maxlength="65535" pattern="([a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':\\|,.>\/?]+$/)" value="<%= snapshotnotes %>">
                                                     <label for="snapshot_notes" class="form-label">Notes:</label> 
                                                 </div>
                                             </div>
@@ -179,11 +178,14 @@
                                     <div class="d-grid gap-2 col-6 mx-auto mb-5 mt-5">
                                         <button id="updateButton" class="btn btn-info" type="submit">Update</button>
                                                     <!-- //TODO Add an on onclick confirmation? -->
-                                        <button id="deleteButton" class="btn btn-danger" type="submit" formaction="/user/<%= userid %>/del/<%= snapshotid %>">Delete</button>
+                                        <button id="deleteButton" class="btn btn-danger" type="submit" formaction="/user/<%= userid %>/del/<%= snapshotid %>" >Delete</button>
+                                        
                                     </div>
                                 </div>
                             </form>
                         </div>
+                        
+
                         <% if (errors) { %>
                             <script>
                                 var errors = JSON.parse('<%- JSON.stringify(errors) %>')
