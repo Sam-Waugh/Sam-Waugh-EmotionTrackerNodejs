@@ -42,6 +42,7 @@
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="userpass">Enter your Password:</label>
                                                         <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" required>
+                                                        <p id="warningtext">WARNING! Caps lock is ON.</p>
                                                     </div>
 
                                                     <div class="d-flex justify-content-center mt-5">
@@ -62,7 +63,6 @@
                             errors.forEach(function(error) {
                                 for (var field in error) {
                                 console.log(field + ': ' + error[field]);
-                                //const msg = field + ': ' + error[field];
                                 document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
                                 }
                             });
@@ -79,6 +79,19 @@
             </main>
 
             <%-  include('footer.ejs') %>
+
+            <script>
+            var userpass = document.getElementById("userpass");
+            var warningtext = document.getElementById("warningtext");
+            userpass.addEventListener("keyup", function(event) {
+
+            if (event.getModifierState("CapsLock")) {
+                warningtext.style.display = "block";
+            } else {
+                warningtext.style.display = "none"
+            }
+            });
+            </script>
 
             <script>
                 $("form").submit((event) => {

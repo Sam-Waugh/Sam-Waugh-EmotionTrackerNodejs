@@ -35,8 +35,22 @@ const registerValidationRules = () => {
       .withMessage("Email must be entered!")
       .isEmail()
       .normalizeEmail()
-      .withMessage("Email must be valid and contain @"),
+          .withMessage("Email must be valid and contain @"),
   ];
+};
+
+const contactValidationRules = () => {
+    return [
+        body("name")
+            .notEmpty()
+            .withMessage("Name is required"),
+        body("email")
+            .isEmail()
+            .withMessage("Invalid Email Address"),
+        body("message")
+            .notEmpty()
+            .withMessage("Message is required"),
+    ];
 };
 
 const snapshotValidationRules = () => {
@@ -61,22 +75,22 @@ const validate = (req, res, next) => {
     if (extractedErrors.length != 0) {
         const userdetails = ({ isloggedin } = req.session);
         console.log(extractedErrors);
-        console.log(req.path.parse);
         var orig_route = req.originalUrl;
         const unwantedchar = "/";
         while (orig_route.charAt(0) == unwantedchar) orig_route = orig_route.substring(1);
         console.log(`postValidation: orig_route: ${orig_route}`);
         return res.status(422).render(`${orig_route}`, {
-          loggedin: userdetails.isloggedin,
-          errors: extractedErrors,
+            loggedin: userdetails.isloggedin,
+            errors: extractedErrors,
         });
-    }
+}
     next();
 };
 
 module.exports = {
     loginValidationRules,
     registerValidationRules,
+    contactValidationRules,
     snapshotValidationRules,
     validate,
 };

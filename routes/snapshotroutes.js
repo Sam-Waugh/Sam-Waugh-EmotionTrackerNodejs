@@ -5,7 +5,7 @@ const { isLoggedIn } = require('../utils/auth');
 const { check } = require('express-validator');
 const {
   validate,
-  loginValidationRules, registerValidationRules, snapshotValidationRules
+  loginValidationRules, registerValidationRules, contactValidationRules, snapshotValidationRules
 } = require("../utils/validator.js");
 
 
@@ -26,7 +26,7 @@ router.post(
   controller.postNewSnapshot
 );
 router.post("/user/:userid/edit/:id",
-  snapshotValidationRules(),
+    snapshotValidationRules(),
   validate, isLoggedIn, controller.updateSnapshot);
 router.post("/user/:userid/del/:id", isLoggedIn, controller.deleteSnapshot);
 router.post('/login', loginValidationRules(), validate, controller.postLogin);
@@ -36,6 +36,6 @@ router.post(
   validate,
   controller.postRegister
 );
-router.post('/contact', controller.postContact);
+router.post('/contact', contactValidationRules(), validate,  controller.postContact);
 
 module.exports = router;

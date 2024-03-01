@@ -121,11 +121,17 @@ exports.selectSnapshot = async (req, res) => {
 };
 
 exports.postNewSnapshot = async (req, res) => {
-   const errors = validationResult(req);
-   console.log(errors.array());
-   if (!errors.array()) {
-     return res.status(422).render("register", { error: errors.array().msg });
-   }
+  const errors = validationResult(req);
+  console.log(errors.array());
+  //  if (errors.array()) {
+  //    return res
+  //      .status(422)
+  //      .render("addsnapshot", {
+  //        errors: errors.array().msg,
+  //        loggedin: isloggedin,
+  //        defaultTriggers: data,
+  //      });
+  //  }
   const userdetails = ({ isloggedin, userid, username } = req.session);
   console.log(`User data from session: ${isloggedin}, ${userid}`);
   const new_details = req.body;
@@ -143,6 +149,10 @@ exports.postNewSnapshot = async (req, res) => {
 };
 
 exports.updateSnapshot = async (req, res) => {
+  // console.log(errors.array());
+  // if (!errors.array()) {
+  //   return res.status(422).render("editsnapshot", { error: errors.array().msg });
+  // }
   const userdetails = ({ isloggedin, userid, username } = req.session);
   console.log(`User data from session: ${isloggedin}, ${userid}`);
   const id = req.params.id;
@@ -190,9 +200,9 @@ exports.getLogin = async (req, res) => {
 exports.postLogin = async (req, res) => {
   const errors = validationResult(req);
   console.log(errors.array());
-  if (!errors.array()) {
-    return res.status(422).render("login", { error: errors.array()[0].msg });
-  }
+  // if (!errors.array()) {
+  //   return res.status(422).render("login", { error: errors.array()[0].msg });
+  // }
   const vals = ({ username: username, userpass: userpass } = req.body);
   console.log(vals);
   const endpoint = `http://localhost:3002/login`;
@@ -254,9 +264,9 @@ exports.getRegister = async (req, res) => {
 exports.postRegister = async (req, res) => {
   const errors = validationResult(req);
   console.log(errors.array());
-  if (!errors.array()) {
-    return res.status(422).render("register", { error: errors.array().msg });
-  }
+  // if (!errors.array()) {
+  //   return res.status(422).render("register", { error: errors.array().msg });
+  // }
   const new_details = req.body;
   const plain_password = new_details.userpass;
   console.log(plain_password);
@@ -303,52 +313,34 @@ exports.getContact = async (req, res) => {
   );
 };
 
-exports.postContact =
-  ("/send",
-  [
-    check("name").notEmpty().withMessage("Name is required"),
-    check("email").isEmail().withMessage("Invalid Email Address"),
-    check("message").notEmpty().withMessage("Message is required"),
-  ],
-  async (req, res) => {
-    const userdetails = ({ isloggedin, userid, username } = req.session);
-    const errors = validationResult(req);
+exports.postContact = async (req, res) => {
+  const userdetails = ({ isloggedin, userid, username } = req.session);
 
-    if (!errors.isEmpty()) {
-      res.render(
-        "contact",
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.GMAILUSERNAME,
+      pass: process.env.GMAILPASSWORD,
+    },
+  });
+
+  const mail_option = {
+    from: req.body.email,
+    to: "sam.waugh90@gmail.com",
+    text: req.body.message,
+  };
+
+  transporter.sendMail(mail_option, (error) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.render("success",
         {
-          loggedin: isloggedin,
-          errors: errors.mapped(),
+          loggedin: isloggedin
         }
       );
-    } else {
-      const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        auth: {
-          user: process.env.GMAILUSERNAME,
-          pass: process.env.GMAILPASSWORD,
-        },
-      });
-
-      const mail_option = {
-        from: req.body.email,
-        to: "sam.waugh90@gmail.com",
-        text: req.body.message,
-      };
-
-      transporter.sendMail(mail_option, (error, info) => {
-        if (error) {
-          console.log(error);
-        } else {
-          res.render("success",
-            {
-              loggedin: isloggedin
-            }
-          );
-        }
-      });
     }
   });
+};
 
  
