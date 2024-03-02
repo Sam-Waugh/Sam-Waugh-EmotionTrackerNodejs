@@ -70,7 +70,6 @@
                             <% if (row.surprise_level) { %>
                                 <% var snapshotsurprise = row.surprise_level; %>
                             <% } %>
-                            <span id="message"></span>
                             <% if (row.notes) { %>
                                 <% var snapshotnotes = row.notes; %>
                             <% } %>
@@ -87,7 +86,6 @@
                         <div class="snapshot">
 
                             <form method="post" action="/user/<%= userid%>/edit/<%= snapshotid %>" class="form-horizontal">
-                        
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-floating mb-5 mt-5">
@@ -161,9 +159,10 @@
                                                 </div>
                                             </div>
 
+                                            <span id="message"></span>
                                             <div class="col-sm-12" style="padding-top: 60px">
                                                 <div class="form-floating col-sm-12">
-                                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" style="height: 7rem;"  maxlength="65535" pattern="([a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':\\|,.>\/?]+$/)" value="<%= snapshotnotes %>">
+                                                    <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" maxlength="65535" pattern="([a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':\\|,.>\/?]*$/).{,65535}" style="height: 7rem;"  value="<%= snapshotnotes %>">
                                                     <label for="snapshot_notes" class="form-label">Notes:</label> 
                                                 </div>
                                             </div>
@@ -192,7 +191,6 @@
                                 errors.forEach(function(error) {
                                     for (var field in error) {
                                     console.log(field + ': ' + error[field]);
-                                    //const msg = field + ': ' + error[field];
                                     document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
                                     }
                                 });

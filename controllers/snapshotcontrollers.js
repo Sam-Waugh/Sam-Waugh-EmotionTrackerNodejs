@@ -1,9 +1,6 @@
 const axios = require("axios");
-//const { response } = require("express");
 const { check, validationResult } = require("express-validator");
-//const dotenv = require("dotenv").config({ path: "./config.env" });
 const nodemailer = require("nodemailer");
-//const ejs = require("ejs");
 const config = {
   headers: {
     "x-api-userid": process.env.APIUSERID,
@@ -47,7 +44,7 @@ exports.getUserSnapshots = async (req, res) => {
     });
 };
 
-exports.getAddNewSnapshot = async (req, res) => {
+exports.getAddNewSnapshot = async (req, res, next, errors = []) => {
   const { isloggedin } = req.session;
   console.log(`User logged in: ${isloggedin}`);
 
@@ -61,7 +58,7 @@ exports.getAddNewSnapshot = async (req, res) => {
       res.render("addsnapshot", {
         loggedin: isloggedin,
         defaultTriggers: data,
-        errors: [],
+        errors: errors,
       });
     })
     .catch((error) => {
@@ -69,7 +66,7 @@ exports.getAddNewSnapshot = async (req, res) => {
     });
 };
 
-exports.selectSnapshot = async (req, res) => {
+exports.selectSnapshot = async (req, res, next, errors = []) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
   console.log(`User data from session: ${isloggedin}, ${userid}`);
   const id = req.params.id;
@@ -89,7 +86,7 @@ exports.selectSnapshot = async (req, res) => {
           loggedin: isloggedin,
           defaultTriggers: defaultTriggers.result,
           snapshot: snapshot.data.result,
-          errors: [],
+          errors: errors,
         });
       })
     )
@@ -99,95 +96,56 @@ exports.selectSnapshot = async (req, res) => {
 };
 
 exports.postNewSnapshot = async (req, res) => {
-    const userdetails = ({ isloggedin, userid, username } = req.session);
-    console.log(`User data from session: ${isloggedin}, ${userid}`);
-    const new_details = req.body;
-    const errors = validationResult(req);
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  console.log(`User data from session: ${isloggedin}, ${userid}`);
+  const new_details = req.body;
+  const errors = validationResult(req);
   console.log(errors.array());
-    const extractedErrors = [];
-   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
-    // if (!errors.isEmpty()) {
-    //   return res.status(422).render("addsnapshot", { errors: errors.array()[0].msg});
-  // }
-  
-  await axios
-    .all([
-      axios.get(`http://localhost:3002/defaultTriggers`, config),
-      axios.post(`http://localhost:3002/user/${userid}/new`, new_details, config),
-    ])
-    .then(
-      axios.spread((defaultTriggers, response) => {
-        // Both requests are now complete
+  const extractedErrors = [];
+  errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
+  if (extractedErrors.length != 0) {
+    return this.getAddNewSnapshot(req, res, null,  extractedErrors);
+  }
 
-        defaultTriggers = defaultTriggers.data;
-    // const endpoint = `http://localhost:3002/user/${userid}/new`;
-    // await axios
-    //   .post(endpoint, new_details, config)
-      // .then((response) => {
-        console.log(response.data);
-        if (extractedErrors.length != 0) {
-          res.status(422).render("addsnapshot", {
-            loggedin: isloggedin,
-            errors:  extractedErrors,
-            defaultTriggers: defaultTriggers.result,
-          });
-        } else {
-          res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
-        }
-      })
-    )
-      .catch((error) => {
-        console.log(`Error making API request: ${error}`);
-      });
-  };
+  const endpoint = `http://localhost:3002/user/${userid}/new`;
+  await axios
+    .post(endpoint, new_details, config)
+    .then((response) => {
+      console.log(response.data);
+      res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
+    })
+    .catch((error) => {
+      console.log(`Error making API request: ${error}`);
+    });
+};
 
 exports.updateSnapshot = async (req, res) => {
-    const userdetails = ({ isloggedin, userid, username } = req.session);
-    console.log(`User data from session: ${isloggedin}, ${userid}`);
-    const id = req.params.id;
-    const new_details = req.body;
-    console.log(req.body.snapshot_trigger_ids);
+  const userdetails = ({ isloggedin, userid, username } = req.session);
+  console.log(`User data from session: ${isloggedin}, ${userid}`);
+  const id = req.params.id;
+  const new_details = req.body;
+  console.log(req.body.snapshot_trigger_ids);
   const vals = [new_details, id];
-   const errors = validationResult(req);
+  const errors = validationResult(req);
   console.log(errors.array());
-    const extractedErrors = [];
-   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
+  const extractedErrors = [];
+  errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
 
-  // const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
-  
-   await axios
-    .all([
-      axios.get(`http://localhost:3002/defaultTriggers`, config),
-      axios.put(`http://localhost:3002/user/${userid}/edit/${id}`, vals, config),
-    ])
-    .then(
-      axios.spread((defaultTriggers, snapshot) => {
-        // Both requests are now complete
+  if (extractedErrors.length != 0) {
+    return this.selectSnapshot(req, res, null, extractedErrors);
+  }
 
-        defaultTriggers = defaultTriggers.data;
-    // await axios
-    //   .put(endpoint, vals, config)
-    //   .then((response) => {
-    //     const errors = validationResult(req);
-        console.log(snapshot.data);
-
-        if (extractedErrors.length != 0) {
-          res.status(422).render("editsnapshot", {
-            user: userdetails,
-            loggedin: isloggedin,
-            errors:  extractedErrors,
-            defaultTriggers: defaultTriggers.result,
-            snapshot: snapshot.data.result,
-          });
-        } else {
-          res.redirect(`/user/${userid}/edit/${id}`);
-        }
-      })
-    )
-      .catch((error) => {
-        console.log(`Error making API request: ${error}`);
-      });
-  };
+  const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
+  await axios
+    .put(endpoint, vals, config)
+    .then((response) => {
+      console.log(response.data);
+      res.redirect(`/user/${userid}/edit/${id}`);
+    })
+    .catch((error) => {
+      console.log(`Error making API request: ${error}`);
+    });
+};
 
 exports.deleteSnapshot = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
@@ -206,142 +164,4 @@ exports.deleteSnapshot = async (req, res) => {
     });
 };
 
-exports.getLogin = async (req, res) => {
-  const userdetails = ({ isloggedin, userid, username } = req.session);
-  res.render("login", {
-    loggedin: isloggedin,
-    errors: [],
-  });
-};
-
-exports.postLogin = async (req, res) => {
-  const errors = validationResult(req);
-  console.log(errors.array());
-  // if (!errors.array()) {
-  //   return res.status(422).render("login", { error: errors.array()[0].msg });
-  // }
-  const vals = ({ username: username, userpass: userpass } = req.body);
-  console.log(vals);
-  const endpoint = `http://localhost:3002/login`;
-
-  await axios
-    .post(endpoint, vals, {
-      validateStatus: (status) => {
-        return status < 500;
-      },
-      headers: config["headers"],
-    })
-    .then((response) => {
-      const status = response.status;
-      if (status === 200) {
-        const data = response.data;
-        console.log(data);
-        const session = req.session;
-        session.isloggedin = true;
-        session.userid = data.id;
-        session.username = data.username;
-        console.log(session);
-
-        const orig_route = session.route;
-        console.log(`postLogin: orig_route: ${orig_route}`);
-        if (orig_route) {
-          res.redirect(`${orig_route}`);
-        } else {
-          res.redirect(`/user/${session.userid}/snapshots`);
-        }
-      } else {
-        const data = response.data;
-        console.log(data);
-        res.redirect("/");
-      }
-    })
-    .catch((error) => {
-      console.log(`Error making API request: ${error}`);
-    });
-};
-
-exports.getLogout = async (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/");
-  });
-};
-
-exports.getRegister = async (req, res) => {
-  const userdetails = ({ isloggedin, userid, username } = req.session);
-  res.render("register", {
-    loggedin: isloggedin,
-    errors: [],
-  });
-};
-
-exports.postRegister = async (req, res) => {
-  const errors = validationResult(req);
-  console.log(errors.array());
-  // if (!errors.array()) {
-  //   return res.status(422).render("register", { error: errors.array().msg });
-  // }
-  const new_details = req.body;
-  const plain_password = new_details.userpass;
-  console.log(plain_password);
-
-  const endpoint = `http://localhost:3002/register`;
-
-  await axios
-    .post(endpoint, new_details, {
-      validateStatus: (status) => {
-        return status < 500;
-      },
-      headers: config["headers"],
-    })
-    .then((response) => {
-      if (response.status > 400) {
-        res.render("register", {
-          loggedin: false,
-          error: response.data.message,
-        });
-      }
-      //const data = response.data.result;
-      console.log(response.data);
-      res.redirect("/login");
-    })
-    .catch((error) => {
-      console.log(`Error making API request: ${error}`);
-    });
-};
-
-exports.getContact = async (req, res) => {
-  const userdetails = ({ isloggedin, userid, username } = req.session);
-  res.render("contact", {
-    loggedin: isloggedin,
-    errors: "",
-  });
-};
-
-exports.postContact = async (req, res) => {
-  const userdetails = ({ isloggedin, userid, username } = req.session);
-
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.GMAILUSERNAME,
-      pass: process.env.GMAILPASSWORD,
-    },
-  });
-
-  const mail_option = {
-    from: req.body.email,
-    to: "sam.waugh90@gmail.com",
-    text: req.body.message,
-  };
-
-  transporter.sendMail(mail_option, (error) => {
-    if (error) {
-      console.log(error);
-    } else {
-      res.render("success", {
-        loggedin: isloggedin,
-      });
-    }
-  });
-};
 

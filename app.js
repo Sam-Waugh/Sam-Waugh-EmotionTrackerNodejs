@@ -2,7 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const dotenv = require('dotenv').config({ path: './config.env' });
 const session = require('express-session');
-const router = require('./routes/snapshotroutes');
+const snapshotrouter = require('./routes/snapshotroutes');
+const userrouter = require("./routes/userroutes");
+const contactrouter = require("./routes/contactroutes");
 const path = require('path');
 
 const app = express();
@@ -29,7 +31,9 @@ app.use(session({
     saveUninitialized: false 
 }));
 
-app.use('/', router);
+app.use('/', snapshotrouter);
+app.use("/", userrouter);
+app.use("/", contactrouter);
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
