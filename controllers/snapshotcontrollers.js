@@ -1,37 +1,15 @@
 const axios = require("axios");
-const trigger_axios = require("axios");
-const { response } = require("express");
+//const { response } = require("express");
 const { check, validationResult } = require("express-validator");
-const dotenv = require("dotenv").config({ path: "./config.env" });
+//const dotenv = require("dotenv").config({ path: "./config.env" });
 const nodemailer = require("nodemailer");
-const ejs = require("ejs");
+//const ejs = require("ejs");
 const config = {
   headers: {
     "x-api-userid": process.env.APIUSERID,
     "x-api-key": process.env.APISIGNATURE,
   },
 };
-
-// async function getTriggerByName(name) {
-//   let sql = `SELECT default_trigger_id FROM default_trigger
-//                     WHERE default_trigger_name = ?`;
-//   const [rows, fields] = await conn.query(sql, [name]);
-//   return rows[0];
-// }
-
-// async function getDefaultTriggers() {
-//   const default_triggers_endpoint = `http://localhost:3002/defaultTriggers`;
-
-//   await trigger_axios
-//     .get(default_triggers_endpoint)
-//     .then((response) => {
-//       const triggers = response.data;
-//       return triggers;
-//     })
-//     .catch((error) => {
-//       throw error;
-//     });
-// }
 
 exports.getLandingPage = (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
@@ -120,86 +98,96 @@ exports.selectSnapshot = async (req, res) => {
     });
 };
 
-exports.postNewSnapshot =
-  ("add",
-  [
-    check("notes")
-      .isLength({ max: 65535 })
-      .withMessage("Notes must be less than 65535 characters!"),
-    check("notes")
-      .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
-      .withMessage(
-        "Notes must only contain alphanumeric characters, spaces and special characters!"
-      ),
-  ],
-  async (req, res) => {
+exports.postNewSnapshot = async (req, res) => {
     const userdetails = ({ isloggedin, userid, username } = req.session);
     console.log(`User data from session: ${isloggedin}, ${userid}`);
     const new_details = req.body;
     const errors = validationResult(req);
-    console.log(errors.array());
+  console.log(errors.array());
+    const extractedErrors = [];
+   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
+    // if (!errors.isEmpty()) {
+    //   return res.status(422).render("addsnapshot", { errors: errors.array()[0].msg});
+  // }
+  
+  await axios
+    .all([
+      axios.get(`http://localhost:3002/defaultTriggers`, config),
+      axios.post(`http://localhost:3002/user/${userid}/new`, new_details, config),
+    ])
+    .then(
+      axios.spread((defaultTriggers, response) => {
+        // Both requests are now complete
 
-    const endpoint = `http://localhost:3002/user/${userid}/new`;
-    await axios
-      .post(endpoint, new_details, config)
-      .then((response) => {
+        defaultTriggers = defaultTriggers.data;
+    // const endpoint = `http://localhost:3002/user/${userid}/new`;
+    // await axios
+    //   .post(endpoint, new_details, config)
+      // .then((response) => {
         console.log(response.data);
-        if (!errors.isEmpty()) {
-          res.render("edit", {
+        if (extractedErrors.length != 0) {
+          res.status(422).render("addsnapshot", {
             loggedin: isloggedin,
-            errors: errors.mapped(),
-            defaultTriggers: defaultTriggers.data.result,
+            errors:  extractedErrors,
+            defaultTriggers: defaultTriggers.result,
           });
         } else {
           res.redirect(`/user/${userid}/edit/${response.data.snapshot_id}`);
         }
       })
+    )
       .catch((error) => {
         console.log(`Error making API request: ${error}`);
       });
-  });
+  };
 
-exports.updateSnapshot =
-  ("edit",
-  [
-    check("notes")
-      .isLength({ max: 65535 })
-      .withMessage("Notes must be less than 65535 characters!"),
-    check("notes")
-      .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
-      .withMessage(
-        "Notes must only contain alphanumeric characters, spaces and special characters!"
-      ),
-  ],
-  async (req, res) => {
+exports.updateSnapshot = async (req, res) => {
     const userdetails = ({ isloggedin, userid, username } = req.session);
     console.log(`User data from session: ${isloggedin}, ${userid}`);
     const id = req.params.id;
     const new_details = req.body;
     console.log(req.body.snapshot_trigger_ids);
-    const vals = [new_details, id];
+  const vals = [new_details, id];
+   const errors = validationResult(req);
+  console.log(errors.array());
+    const extractedErrors = [];
+   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
 
-    const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
-    await axios
-      .put(endpoint, vals, config)
-      .then((response) => {
-        const errors = validationResult(req);
-        console.log(response.data);
+  // const endpoint = `http://localhost:3002/user/${userid}/edit/${id}`;
+  
+   await axios
+    .all([
+      axios.get(`http://localhost:3002/defaultTriggers`, config),
+      axios.put(`http://localhost:3002/user/${userid}/edit/${id}`, vals, config),
+    ])
+    .then(
+      axios.spread((defaultTriggers, snapshot) => {
+        // Both requests are now complete
 
-        if (!errors.isEmpty()) {
-          res.render("edit", {
+        defaultTriggers = defaultTriggers.data;
+    // await axios
+    //   .put(endpoint, vals, config)
+    //   .then((response) => {
+    //     const errors = validationResult(req);
+        console.log(snapshot.data);
+
+        if (extractedErrors.length != 0) {
+          res.status(422).render("editsnapshot", {
+            user: userdetails,
             loggedin: isloggedin,
-            errors: errors.mapped(),
-            defaultTriggers: defaultTriggers.data.result,
+            errors:  extractedErrors,
+            defaultTriggers: defaultTriggers.result,
+            snapshot: snapshot.data.result,
           });
         } else {
           res.redirect(`/user/${userid}/edit/${id}`);
         }
       })
+    )
       .catch((error) => {
         console.log(`Error making API request: ${error}`);
       });
-  });
+  };
 
 exports.deleteSnapshot = async (req, res) => {
   const userdetails = ({ isloggedin, userid, username } = req.session);
@@ -356,3 +344,4 @@ exports.postContact = async (req, res) => {
     }
   });
 };
+

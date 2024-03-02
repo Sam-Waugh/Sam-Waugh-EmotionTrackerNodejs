@@ -53,20 +53,6 @@ const contactValidationRules = () => {
     ];
 };
 
-// const snapshotValidationRules = () => {
-//   return [
-//     body("notes")
-//       .isLength({ max: 65535 })
-//       .withMessage(
-//         "Notes must be at least 1 character long and less than 32767 characters!"
-//       )
-//       .matches(/^[a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/)
-//       .withMessage(
-//         "Notes must only contain alphanumeric characters, spaces and special characters!"
-//       ),
-//   ];
-// };
-
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -76,17 +62,19 @@ const validate = (req, res, next) => {
   errors.array().map((err) => extractedErrors.push({ [err.path]: err.msg }));
 
     if (extractedErrors.length != 0) {
-        const userdetails = ({ isloggedin } = req.session);
-        console.log(extractedErrors);
+      const userdetails = ({ isloggedin } = req.session);
+      
+      console.log(extractedErrors);
+  
         var orig_route = req.originalUrl;
         const unwantedchar = "/";
         while (orig_route.charAt(0) == unwantedchar) orig_route = orig_route.substring(1);
         console.log(`postValidation: orig_route: ${orig_route}`);
         return res.status(422).render(`${orig_route}`, {
-            loggedin: userdetails.isloggedin,
-            errors: extractedErrors,
+          loggedin: userdetails.isloggedin,
+          errors: extractedErrors
         });
-}
+      }
     next();
 };
 
