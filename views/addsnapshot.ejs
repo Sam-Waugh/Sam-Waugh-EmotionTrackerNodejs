@@ -14,16 +14,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!-- Custom styles for this template -->
         <link rel="stylesheet" type="text/css" href="/css/mystyle.css">
-
     </head>
 
     <body class="d-flex text-center text-white emo-bg">
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
             <%-  include('topbar.ejs') %>
+           
             <main class="px-3">
                 <container> 
-
                     <% defaultTriggers.forEach((row) => { %>
                         <% row.default_trigger_name %>
                     <% }); %> 
@@ -33,13 +32,11 @@
                     <% const currentDate = inputdate.toLocaleString("en-GB", options); %>
 
                     <div class="snapshot">
-
                         <form method="post" action="/user/<%= userid%>/new" class="form-horizontal">
-
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-floating mb-5 mt-5">
-                                        <input type="text" class="form-control" id="snapshot_date" name="snapshot_date" aria-current="date" value="<%= currentDate%>">
+                                        <input type="text" class="form-control" id="snapshot_date" name="snapshot_date" aria-current="date" value="<%= currentDate%>"/>
                                         <label for="snapshot_date" class="form-label">Date Snapshot Created:</label> 
                                     </div>
                                 </div>
@@ -51,81 +48,80 @@
                                         <div class="range mb-2 mt-2" data-mdb-range-init>
                                             <p>Enjoyment: <span id="enjoyment_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_enjoyment" type="range" name="snapshot_enjoyment" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_enjoyment" type="range" name="snapshot_enjoyment" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                         </div>
                                         <div class="range mb-2" data-mdb-range-init>
                                             <p>Sadness: <span id="sadness_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_sadness" type="range" name="snapshot_sadness" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_sadness" type="range" name="snapshot_sadness" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                         </div>
                                         <div class="range mb-2" data-mdb-range-init>
                                             <p>Anger: <span id="anger_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_anger" type="range" name="snapshot_anger" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_anger" type="range" name="snapshot_anger" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                         </div>
                                          <div class="range mb-2" data-mdb-range-init>
                                             <p>Contempt: <span id="contempt_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_contempt" type="range" name="snapshot_contempt" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_contempt" type="range" name="snapshot_contempt" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                         </div>
                                          <div class="range mb-2" data-mdb-range-init>
                                             <p>Disgust: <span id="disgust_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_disgust" type="range" name="snapshot_disgust" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_disgust" type="range" name="snapshot_disgust" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                         </div>
                                          <div class="range mb-2" data-mdb-range-init>
                                             <p>Fear: <span id="fear_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_fear" type="range" name="snapshot_fear" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_fear" type="range" name="snapshot_fear" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                         </div>
                                          <div class="range mb-2" data-mdb-range-init>
                                             <p>Surprise: <span id="surprise_value"></span></p>
                                             <span class="font-weight-bold mr-2 col-sm-1">1</span>
-                                            <input class="w-75" id="snapshot_surprise" type="range" name="snapshot_surprise" min="1" max="5" step="1" value="1">
+                                            <input class="w-75" id="snapshot_surprise" type="range" name="snapshot_surprise" min="1" max="5" step="1" value="1" />
                                             <span class="font-weight-bold indigo-text ml-2 col-sm-1">5</span>
                                          </div>
                                     </div>
                                 </div>
-                                
                                 <div class="col-sm-6">
                                     <div class="row">
                                         <div class="col-sm-12 ms-4">
                                             <div class="form-label mt-1">Emotional Triggers (select all that apply):
                                                 <div class="list-group body text-start"  style="padding-left: 30px">
-                                                        <% let col = 0 %>
-                                                        <% for (let trigger of defaultTriggers) { %>
-                                                            <% if (col % 2 == 0) { %>
+                                                    <% let col = 0 %>
+                                                    <% for (let trigger of defaultTriggers) { %>
+                                                    <% if (col % 2 == 0) { %>
                                                     <div class="row">
-                                                            <% }%>
+                                                        <% }%>
                                                         <div class="col"> 
                                                             <div class="form-check">
-                                                                <input class= "form-check-input" type="checkbox" name="snapshot_trigger_ids" id="trigger_<%= trigger.default_trigger_id %>" value="<%= trigger.default_trigger_id %>" maxlength="65535" > 
+                                                                <input class= "form-check-input" type="checkbox" name="snapshot_trigger_ids" id="trigger_<%= trigger.default_trigger_id %>" value="<%= trigger.default_trigger_id %>" maxlength="65535" /> 
                                                                 <label class="form-check-label" for="trigger_<%= trigger.default_trigger_id %>">
-                                                                    <%= trigger.default_trigger_name %>
+                                                                <%= trigger.default_trigger_name %>
                                                                 </label>
                                                             </div>
                                                         </div>
-                                                            <% col++ %>
-                                                            <% if (col % 2 == 0) { %>
+                                                        <% col++ %>
+                                                        <% if (col % 2 == 0) { %>
                                                     </div>
-                                                            <% }%>
-                                                        <% }%>
+                                                    <% }%>
+                                                    <% }%>
                                                 </div>
                                             </div>
                                         </div>
-                                                <span id="message"></span>
-                                                <div class="col-sm-12 ms-3" style="padding-top: 60px">
-                                                    <div class="form-floating col-sm-12">
-                                                        <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" maxlength="65535" pattern="([a-zA-Z0-9 !@#$%^&*()_+\-=\[\]{};':\\|,.>\/?]*$/).{,65535}" style="height: 7rem;" value="">
-                                                        <label for="snapshot_notes" class="form-label">Notes:</label> 
-                                                    </div>
-                                                </div>
+                                        <span id="message"></span>
+                                        <div class="col-sm-12 ms-3" style="padding-top: 60px">
+                                            <div class="form-floating col-sm-12">
+                                                <input type="text" class="form-control" id="snapshot_notes" name="snapshot_notes" maxlength="65535" pattern="[\w\s\W]+" style="height: 7rem;" value="" />
+                                                <label for="snapshot_notes" class="form-label">Notes:</label> 
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             <div class="row mt-5">
@@ -135,77 +131,77 @@
                             </div>
                         </form>
                     </div>
-                      <% if (errors) { %>
-                            <script>
-                                var errors = JSON.parse('<%- JSON.stringify(errors) %>')
-                                errors.forEach(function(error) {
-                                    for (var field in error) {
-                                    console.log(field + ': ' + error[field]);
-                                    document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
-                                    }
-                                });
-                                const msg = ' <%= errors %>';
-                                $('#message')
-                                .css('color', 'red')
-                                .show()
-                                .fadeOut(7000);
-                            </script>                                
-                        <% } %>
+                    <% if (errors) { %>
+                    <script>
+                        var errors = JSON.parse('<%- JSON.stringify(errors) %>')
+                        errors.forEach(function(error) {
+                            for (var field in error) {
+                            console.log(field + ': ' + error[field]);
+                            document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
+                            }
+                        });
+                        const msg = ' <%= errors %>';
+                        $('#message')
+                        .css('color', 'red')
+                        .show()
+                        .fadeOut(7000);
+                    </script>                                
+                    <% } %>
                 </container>
             </main>
-            <%-  include('footer.ejs') %>
 
+            <%-  include('footer.ejs') %>
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
             <script>
-            var enjoyment_slider = document.getElementById("snapshot_enjoyment");
-            var enjoyment_output = document.getElementById("enjoyment_value");
-            enjoyment_output.innerHTML = enjoyment_slider.value;
-            enjoyment_slider.oninput = function() {
-                enjoyment_output.innerHTML = this.value;
-            }
+                var enjoyment_slider = document.getElementById("snapshot_enjoyment");
+                var enjoyment_output = document.getElementById("enjoyment_value");
+                enjoyment_output.innerHTML = enjoyment_slider.value;
+                enjoyment_slider.oninput = function() {
+                    enjoyment_output.innerHTML = this.value;
+                }
 
-            var sadness_slider = document.getElementById("snapshot_sadness");
-            var sadness_output = document.getElementById("sadness_value");
-            sadness_output.innerHTML = sadness_slider.value;
-            sadness_slider.oninput = function() {
-                sadness_output.innerHTML = this.value;
-            }
+                var sadness_slider = document.getElementById("snapshot_sadness");
+                var sadness_output = document.getElementById("sadness_value");
+                sadness_output.innerHTML = sadness_slider.value;
+                sadness_slider.oninput = function() {
+                    sadness_output.innerHTML = this.value;
+                }
 
-            var anger_slider = document.getElementById("snapshot_anger");
-            var anger_output = document.getElementById("anger_value");
-            anger_output.innerHTML = anger_slider.value;
-            anger_slider.oninput = function() {
-                anger_output.innerHTML = this.value;
-            }
+                var anger_slider = document.getElementById("snapshot_anger");
+                var anger_output = document.getElementById("anger_value");
+                anger_output.innerHTML = anger_slider.value;
+                anger_slider.oninput = function() {
+                    anger_output.innerHTML = this.value;
+                }
 
-            var contempt_slider = document.getElementById("snapshot_contempt");
-            var contempt_output = document.getElementById("contempt_value");
-            contempt_output.innerHTML = contempt_slider.value;
-            contempt_slider.oninput = function() {
-                contempt_output.innerHTML = this.value;
-            }
+                var contempt_slider = document.getElementById("snapshot_contempt");
+                var contempt_output = document.getElementById("contempt_value");
+                contempt_output.innerHTML = contempt_slider.value;
+                contempt_slider.oninput = function() {
+                    contempt_output.innerHTML = this.value;
+                }
 
-            var disgust_slider = document.getElementById("snapshot_disgust");
-            var disgust_output = document.getElementById("disgust_value");
-            disgust_output.innerHTML = disgust_slider.value;
-            disgust_slider.oninput = function() {
-                disgust_output.innerHTML = this.value;
-            }
+                var disgust_slider = document.getElementById("snapshot_disgust");
+                var disgust_output = document.getElementById("disgust_value");
+                disgust_output.innerHTML = disgust_slider.value;
+                disgust_slider.oninput = function() {
+                    disgust_output.innerHTML = this.value;
+                }
 
-            var fear_slider = document.getElementById("snapshot_fear");
-            var fear_output = document.getElementById("fear_value");
-            fear_output.innerHTML = fear_slider.value;
-            fear_slider.oninput = function() {
-                fear_output.innerHTML = this.value;
-            }
+                var fear_slider = document.getElementById("snapshot_fear");
+                var fear_output = document.getElementById("fear_value");
+                fear_output.innerHTML = fear_slider.value;
+                fear_slider.oninput = function() {
+                    fear_output.innerHTML = this.value;
+                }
 
-            var surprise_slider = document.getElementById("snapshot_surprise");
-            var surprise_output = document.getElementById("surprise_value");
-            surprise_output.innerHTML = surprise_slider.value;
-            surprise_slider.oninput = function() {
-                surprise_output.innerHTML = this.value;
-            }
+                var surprise_slider = document.getElementById("snapshot_surprise");
+                var surprise_output = document.getElementById("surprise_value");
+                surprise_output.innerHTML = surprise_slider.value;
+                surprise_slider.oninput = function() {
+                    surprise_output.innerHTML = this.value;
+                }
             </script>
         </div>        
     </body>

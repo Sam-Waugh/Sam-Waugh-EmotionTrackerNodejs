@@ -14,14 +14,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
         <!-- Custom styles for this template -->
         <link rel="stylesheet" type="text/css" href="/css/mystyle.css">
-
     </head>
-
 
     <body class="text-center text-white emo-bg">
         <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
 
             <%-  include('topbar.ejs') %>
+
             <main class="px-3 my-5">
                 <h1 class="display-1 mb-5">Register Now!</h1>
                 <p class="lead fs-2 mb-5">Create an account to track the triggers that impact those emotions and gain the insights to become a happier you.</p>
@@ -34,70 +33,60 @@
                                         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                                             <div class="card-body p-4">
                                                 <form method="post" action="/register" class="text-dark text-start">
-
                                                     <div class="form-outline mb-2">
                                                         <span id="message"></span>
                                                         <label class="form-label" for="username">Choose a Username</label>
-                                                        <input type="text" id="username" name="username" class="form-control form-control-lg" minlength="3" maxlength="255" pattern="[A-Za-z0-9]+" aria-required="true" required>
+                                                        <input type="text" id="username" name="username" class="form-control form-control-lg" minlength="3" maxlength="255" pattern="[A-Za-z0-9]+" aria-required="true" required />
                                                          <div id="usernameHelpBlock" class="form-text">
                                                             This must be unique and at least 3 alphanumeric characters long.
                                                         </div>
                                                     </div>
-
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="name">Your Name</label>
-                                                        <input type="text" id="name" name="name" class="form-control form-control-lg" minlength="3" maxlength="255" pattern="[A-Za-z0-9 ]+" aria-required="true" required>
+                                                        <input type="text" id="name" name="name" class="form-control form-control-lg" minlength="3" maxlength="255" pattern="[A-Za-z0-9 ]+" aria-required="true" required />
                                                     </div>
-
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="dob">Date Of Birth</label>
                                                         <div class="input-group date" id="datepicker" data-date-format="mm-dd-yyyy">
-                                                            <input type="date" id="dob" name="dob" class="form-control form-control-lg" aria-required="true" required>
+                                                            <input type="date" id="dob" name="dob" class="form-control form-control-lg" aria-required="true" required />
                                                         </div>
                                                     </div>
-                                                    
                                                     <div class="d-md-flex justify-content-start align-items-center mb-2 py-2">
-                                                    <h6 class="mb-0 me-4">Gender: </h6>
-                                                    <div class="form-check form-check-inline mb-0 me-4">
-                                                        <input class="form-check-input" type="radio" name="gender" id="female"
-                                                        value="female" />
-                                                        <label class="form-check-label" for="female">Female</label>
+                                                        <h6 class="mb-0 me-4">Gender: </h6>
+                                                        <div class="form-check form-check-inline mb-0 me-4">
+                                                            <input class="form-check-input" type="radio" name="gender" id="female" value="female" />
+                                                            <label class="form-check-label" for="female">Female</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline mb-0 me-4">
+                                                            <input class="form-check-input" type="radio" name="gender" id="male" value="male" />
+                                                            <label class="form-check-label" for="male">Male</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline mb-0">
+                                                            <input class="form-check-input" type="radio" name="gender" id="other" value="other" />
+                                                            <label class="form-check-label" for="other">Other</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check form-check-inline mb-0 me-4">
-                                                        <input class="form-check-input" type="radio" name="gender" id="male"
-                                                        value="male" />
-                                                        <label class="form-check-label" for="male">Male</label>
-                                                    </div>
-                                                    <div class="form-check form-check-inline mb-0">
-                                                        <input class="form-check-input" type="radio" name="gender" id="other"
-                                                        value="other" />
-                                                        <label class="form-check-label" for="other">Other</label>
-                                                    </div>
-                                                    </div>
-
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="email">Your Email</label>
-                                                        <input type="email" id="email" name="email" class="form-control form-control-lg" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}" aria-describedby="emailHelp" aria-required="true" required>
+                                                        <input type="email" id="email" name="email" class="form-control form-control-lg" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}" aria-describedby="emailHelp" aria-required="true" required />
                                                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                                                     </div>
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="userpass">Password</label>
-                                                        <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" aria-describedby="passwordHelpBlock" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" aria-required="true" required>
+                                                        <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" aria-describedby="passwordHelpBlock" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" aria-required="true" required />
                                                         <div id="passwordHelpBlock" class="form-text">
                                                             Your password must be 8-20 characters long, contain at least one number and one uppercase and lowercase letter, and must not contain spaces or special characters.
                                                         </div>
                                                     </div>
                                                     <div class="form-outline mb-3">
                                                         <label class="form-label" for="userpasscheck">Repeat your password</label>
-                                                        <input type="password" id="userpasscheck" name="userpasscheck" class="form-control form-control-lg" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" aria-required="true" required>
+                                                        <input type="password" id="userpasscheck" name="userpasscheck" class="form-control form-control-lg" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" aria-required="true" required />
                                                         <p id="warningtext">WARNING! Passwords entered do not match.</p>
                                                     </div>
-
                                                     <div class="d-flex justify-content-center mt-4">
                                                     <button id="registerButton" type="submit"
                                                         class="btn btn-info btn-block btn-lg gradient-custom-4 text-body">Register</button>
                                                     </div>
-
                                                     <p class="text-center text-muted mt-3 mb-0">Already have an account? <a href="/login"
                                                         class="fw-bold text-body"><u>Login here</u></a></p>
                                                     </div>
@@ -108,14 +97,12 @@
                                 </div>
                             </div>
                         </div>
-
                             <% if (errors) { %>
                             <script>
                                 var errors = JSON.parse('<%- JSON.stringify(errors) %>')
                                 errors.forEach(function(error) {
                                     for (var field in error) {
                                     console.log(field + ': ' + error[field]);
-                                    //const msg = field + ': ' + error[field];
                                     document.getElementById('message').innerHTML += '<p>' + field + ': ' + error[field] + '</p>';
                                     }
                                 });
@@ -125,7 +112,7 @@
                                 .show()
                                 .fadeOut(7000);
                             </script>                                
-                        <% } %>
+                            <% } %>
                     </section>
                 </container>
             </main>
@@ -134,28 +121,26 @@
 
             <!-- check passwords match - confirm if update either entry -->
             <script>
-            var userpass = document.getElementById("userpass");
-            var userpasscheck = document.getElementById("userpasscheck");
-            var warningtext = document.getElementById("warningtext");
+                var userpass = document.getElementById("userpass");
+                var userpasscheck = document.getElementById("userpasscheck");
+                var warningtext = document.getElementById("warningtext");
 
-            userpasscheck.addEventListener("change", function(event) {
-            if (userpasscheck.value != userpass.value) {
-                warningtext.style.display = "block";
-            } else {
-                warningtext.style.display = "none"
-            }
-            });            
-            
-            userpass.addEventListener("change", function(event) {
-            if (userpasscheck.value != userpass.value) {
-                warningtext.style.display = "block";
-            } else {
-                warningtext.style.display = "none"
-            }
-            });            
+                userpasscheck.addEventListener("change", function(event) {
+                    if (userpasscheck.value != userpass.value) {
+                        warningtext.style.display = "block";
+                    } else {
+                        warningtext.style.display = "none"
+                    }
+                });            
 
+                userpass.addEventListener("change", function(event) {
+                    if (userpasscheck.value != userpass.value) {
+                        warningtext.style.display = "block";
+                    } else {
+                        warningtext.style.display = "none"
+                    }
+                });            
             </script>
-
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         </div>
     </body>

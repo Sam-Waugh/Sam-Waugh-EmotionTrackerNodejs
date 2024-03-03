@@ -18,8 +18,6 @@
         <link rel="stylesheet" type="text/css" href="/css/mystyle.css">
         <!-- Slider stylesheet-->
         <link rel="stylesheet" type="text/css" href="/circular-slider/lib/circular-slider.css"/>
-        
-
     </head>
 
     <body class="text-center text-white emo-bg">
@@ -29,141 +27,123 @@
 
             <main class="px-3">
                 <container>            
-                <% if (loggedin) { %>
-                <h1 class="mt-3 mb-3"><%= `${user.username}'s Snapshots `%></h1>
-                <h3>Your Emotional Snapshots Over Time</h3>
-
-                <!-- Define an object to hold emotions mapped by datetime -->
-                <% var emotionsByDatetime = {}; %>
-
-                <!-- Define objects to hold emotions arrays mapped by datetime -->
-                <% var enjoymentArray = []; %>
-                <% var sadnessArray = [];  %>
-                <% var angerArray = []; %>
-                <% var contemptArray = []; %>
-                <% var disgustArray = []; %>
-                <% var fearArray = []; %>
-                <% var surpriseArray = []; %>
-
-
+                    <% if (loggedin) { %>
+                    <h1 class="mt-3 mb-3"><%= `${user.username}'s Snapshots `%></h1>
+                    <h3>Your Emotional Snapshots Over Time</h3>
+                    <!-- object to hold emotions mapped by datetime -->
+                    <% var emotionsByDatetime = {}; %>
+                    <!-- objects to hold emotions arrays mapped by datetime -->
+                    <% var enjoymentArray = []; %>
+                    <% var sadnessArray = [];  %>
+                    <% var angerArray = []; %>
+                    <% var contemptArray = []; %>
+                    <% var disgustArray = []; %>
+                    <% var fearArray = []; %>
+                    <% var surpriseArray = []; %>
                     <div class="col-sm-12">
-                    <div class="justify-content-center w-90 mx-auto mb-5">
-
-                        <canvas id="canvas" class="w-100 h-100"></canvas>
-                        <!-- <input type="month" onchange="filterChart(this)"/> -->
-
-                    </div>
+                        <div class="justify-content-center w-90 mx-auto mb-5">
+                            <canvas id="canvas" class="w-100 h-100"></canvas>
+                        </div>
                     </div>
                     <div class="col-sm-12">
-                    <div class="justify-content-center w-50 mx-auto mb-5">
-                        <h3>Your Top Triggers</h3>
-                        <h5>The split of the Triggers that have impacted your emotions</h5>
-                        <canvas id="canvasTriggers" class="w-100 h-100"></canvas>
-                        <!-- <input type="month" onchange="filterChart(this)"/> -->
-
+                        <div class="justify-content-center w-50 mx-auto mb-5">
+                            <h3>Your Top Triggers</h3>
+                            <h5>The split of the Triggers that have impacted your emotions</h5>
+                            <canvas id="canvasTriggers" class="w-100 h-100"></canvas>
+                        </div>
                     </div>
-                    </div>
-                    
-
                         <h5>Click a snapshot to edit your triggers and notes</h5>
                         <% } else { %>
                         <h2>My Snapshots</h2>
                         <% } %>
                         <div class="row row-cols-md-3 g-4 mt-3 mb-3 mx-auto text-center">
                             <% var dateOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric", }; %>                        
-                                    <% snapshots.forEach((row, index) => { %>
-                               
-                                <div class="col-lg-4 ">
-                                    <div class="card text-white w-100  h-100 bg-dark">
+                                <% snapshots.forEach((row, index) => { %>
+                            <div class="col-lg-4 ">
+                                <div class="card text-white w-100  h-100 bg-dark">
                                 <% if (row) { %>
                                     <% var snapshotid = row.emotional_snapshot_id; %>
                                     <% if (loggedin) { %> 
-
-                            <% var snapshotdate = row.created_ts; %>
-                            <% if (snapshotdate) { %>
-                                <% var inputdate = new Date(snapshotdate); %>
-                                <% var formattedDate = inputdate.toLocaleString("en-GB", dateOptions); %>
-                            <% } %>
-
-                            <% if (row.modified_ts) { %>
-                                <% var snapshotupdatedate = row.modified_ts; %>
-                                    <% if (snapshotupdatedate) { %>
-                                        <% var inputupdatedate = new Date(snapshotdate); %>
-                                        <% var formattedUpdateDate = inputupdatedate.toLocaleString("en-GB", dateOptions); %>
+                                    <% var snapshotdate = row.created_ts; %>
+                                    <% if (snapshotdate) { %>
+                                        <% var inputdate = new Date(snapshotdate); %>
+                                        <% var formattedDate = inputdate.toLocaleString("en-GB", dateOptions); %>
                                     <% } %>
-                                <% } %>
-
-
+                                    <% if (row.modified_ts) { %>
+                                        <% var snapshotupdatedate = row.modified_ts; %>
+                                            <% if (snapshotupdatedate) { %>
+                                                <% var inputupdatedate = new Date(snapshotdate); %>
+                                                <% var formattedUpdateDate = inputupdatedate.toLocaleString("en-GB", dateOptions); %>
+                                            <% } %>
+                                        <% } %>
                                     <a href='/user/<%=userid%>/edit/<%= snapshotid %>' class="remove_underline card-body">
                                         <div class="row">
-                                        <div class="col-sm-4">
-                                        <path d="M512 455c0 32-25 57-57 57H57c-32 0-57-25-57-57V128c0-31 25-57 57-57h398c32 0 57 26 57 57z" fill="#e0e7ec"/>
-                                        <div class="w-75">
-                                        <svg  xmlns="http://www.w3.org/2000/svg"
-                                            aria-label="Calendar" role="img"
-                                            viewBox="0 0 512 512">
-                                            <path d="M484 0h-47c2 4 4 9 4 14a28 28 0 1 1-53-14H124c3 4 4 9 4 14A28 28 0 1 1 75 0H28C13 0 0 13 0 28v157h512V28c0-15-13-28-28-28z" fill="#27bdca"/>
+                                            <div class="col-sm-4">
+                                                <path d="M512 455c0 32-25 57-57 57H57c-32 0-57-25-57-57V128c0-31 25-57 57-57h398c32 0 57 26 57 57z" fill="#e0e7ec"/>
+                                                <div class="w-75">
+                                                    <svg  xmlns="http://www.w3.org/2000/svg"
+                                                        aria-label="Calendar" role="img"
+                                                        viewBox="0 0 512 512">
+                                                        <path d="M484 0h-47c2 4 4 9 4 14a28 28 0 1 1-53-14H124c3 4 4 9 4 14A28 28 0 1 1 75 0H28C13 0 0 13 0 28v157h512V28c0-15-13-28-28-28z" fill="#27bdca"/>
 
-                                            <g fill="#f3aab9">
-                                            <circle cx="470" cy="142" r="14"/>
-                                            <circle cx="470" cy="100" r="14"/>
-                                            <circle cx="427" cy="142" r="14"/>
-                                            <circle cx="427" cy="100" r="14"/>
-                                            <circle cx="384" cy="142" r="14"/>
-                                            <circle cx="384" cy="100" r="14"/>
-                                            </g>
+                                                        <g fill="#f3aab9">
+                                                        <circle cx="470" cy="142" r="14"/>
+                                                        <circle cx="470" cy="100" r="14"/>
+                                                        <circle cx="427" cy="142" r="14"/>
+                                                        <circle cx="427" cy="100" r="14"/>
+                                                        <circle cx="384" cy="142" r="14"/>
+                                                        <circle cx="384" cy="100" r="14"/>
+                                                        </g>
 
-                                            <text id="month"
-                                            x="32" 
-                                            y="164" 
-                                            fill="#fff" 
-                                            font-family="monospace"
-                                            font-size="140px"
-                                            style="text-anchor: left"><%= inputdate.toLocaleString('default', { month: 'short' }); %></text>
+                                                        <text id="month"
+                                                        x="32" 
+                                                        y="164" 
+                                                        fill="#fff" 
+                                                        font-family="monospace"
+                                                        font-size="140px"
+                                                        style="text-anchor: left"><%= inputdate.toLocaleString('default', { month: 'short' }); %></text>
 
-                                            <text id="day"
-                                            x="256" 
-                                            y="400" 
-                                            fill="#66757f" 
-                                            font-family="monospace"
-                                            font-size="256px"
-                                            style="text-anchor: middle"><%= inputdate.getDate(); %></text>
+                                                        <text id="day"
+                                                        x="256" 
+                                                        y="400" 
+                                                        fill="#66757f" 
+                                                        font-family="monospace"
+                                                        font-size="256px"
+                                                        style="text-anchor: middle"><%= inputdate.getDate(); %></text>
 
-                                            <text id="weekday"
-                                            x="256" 
-                                            y="480" 
-                                            fill="#66757f" 
-                                            font-family="monospace"
-                                            font-size="64px"
-                                            style="text-anchor: middle"><%= inputdate.toLocaleDateString('default', { weekday: 'short' }); %></text>
-                                            </svg>
+                                                        <text id="weekday"
+                                                        x="256" 
+                                                        y="480" 
+                                                        fill="#66757f" 
+                                                        font-family="monospace"
+                                                        font-size="64px"
+                                                        style="text-anchor: middle"><%= inputdate.toLocaleDateString('default', { weekday: 'short' }); %></text>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="justify-content-center w-100 mx-auto">
+                                                    <canvas id="canvas_<%= index %>" class="w-100 h-100"></canvas>
+                                                </div>
+                                            </div>
                                         </div>
-                                        </div>
-    
-                                        <div class="col-sm-8">
-                                        <div class="justify-content-center w-100 mx-auto">
-                                            <canvas id="canvas_<%= index %>" class="w-100 h-100"></canvas>
-                                        </div>
-                                        </div>
-                                        </div>
-                                        <p class="card-text text-white text-start">
-                                            <% if (row.default_trigger_ids && row.default_trigger_ids.length > 0) { %>
-                                                <% row.default_trigger_ids.forEach((triggerSelected) => { %>
-                                                   
-                                                    <span class="badge bg-info text-dark text-start" style="font-family: monospace"><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %></span>
-
-                                                <% }); %>
-                                            <% } %>
-                                        </p>          
+                                        <div>
+                                            <p class="card-text text-white text-start">
+                                                <% if (row.default_trigger_ids && row.default_trigger_ids.length > 0) { %>
+                                                    <% row.default_trigger_ids.forEach((triggerSelected) => { %>
+                                                        <span class="badge bg-info text-dark text-start" style="font-family: monospace"><%= defaultTriggers.find(item => item.default_trigger_id === triggerSelected ).default_trigger_name; %></span>
+                                                    <% }); %>
+                                                <% } %>
+                                            </p>  
+                                        </div>        
                                     </a>
                                 </div>
                             </div>
-                            <% } %>        
-                        <% }; %>
-                    <% }); %>
+                                <% } %>        
+                                <% }; %>
+                                <% }); %>
                         </div>
                     </div>
-
                 </container>
             </main>
 
@@ -172,13 +152,13 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>         
    
             <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-            <!-- Loop through each snapshot -->
+                <!-- Loop through each snapshot -->
                 <% var xlabels = [] %>
                 <% snapshots.forEach((snapshot) => { %>
-            <!-- Extract snapshot datetime and emotions -->
+                <!-- Extract snapshot datetime and emotions -->
                 <%    const snapshotDatetime = new Date(snapshot.created_ts).toLocaleDateString();; %>
                 <%    xlabels.push(snapshotDatetime) %>
-            <!-- Push emotion values to respective arrays -->
+                <!-- Push emotion values to respective arrays -->
                 <%     enjoymentArray.push({ x: snapshotDatetime, y: snapshot.enjoyment_level }); %>
                 <%     sadnessArray.push({ x: snapshotDatetime, y: snapshot.sadness_level }); %>
                 <%     angerArray.push({ x: snapshotDatetime, y: snapshot.anger_level }); %>
@@ -188,9 +168,6 @@
                 <%     surpriseArray.push({ x: snapshotDatetime, y: snapshot.surprise_level }); %>
                 <% }); %>
            <script>
-
-    
-
                 const enjoymentData = '<%- JSON.stringify(enjoymentArray) %>';
                 const sadnessData = '<%- JSON.stringify(sadnessArray) %>';
                 const angerData = '<%- JSON.stringify(angerArray) %>';
@@ -304,10 +281,7 @@
                     }
 
                 const chart = new Chart('canvas', chartconfig);
-
             </script>
-
-
             <script>
             <% var triggerCounts = {}; %>
                 <% snapshots.forEach((snapshot) => { %>
@@ -377,9 +351,6 @@
 
                 const chartTriggers = new Chart('canvasTriggers', chartTriggersConfig);
             </script>
-            
-           
-
             <script>
             // Loop through each snapshot
                 <% snapshots.forEach((snapshot, index) => { %>
