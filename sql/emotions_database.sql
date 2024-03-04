@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 03, 2024 at 11:04 PM
+-- Generation Time: Mar 04, 2024 at 05:06 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -290,13 +290,15 @@ INSERT INTO `user` (`user_id`, `username`, `password_saltedhash`, `email`, `name
 (1, 'bob', '$2b$10$XReKIXxPdoO4s58qgkSLMun/SEkme2AhOBdEGiC0naBEGZ/R19L4G', 'bob@gmail.com', 'Bob Smith', '2000-02-04', 'Male'),
 (3, 'david', '$2b$10$jHBfCIYy59x4L2O/tPvpfueLg6BUH1wwQmU/iYPeE59LLmeaMnO.K', 'david@gmail.com', 'david', '0000-00-00', 'Male'),
 (17, 'fred', '$2b$10$8VoqT.bcIssKr/P0QC.vvelYUw2NvvcYxDGgcVlefzECYnFdWjXGu', 'fred@gmail.com', 'Fred', '1970-01-01', 'Male'),
-(18, 'Sam', '$2b$10$kYOG8IxrJoCcS3o0Wg5Jre6CG7Ig5ObuqyqTco1jo5xXoXFpHBUMS', 'sam@gmail.co.uk', 'Sam King', '1990-05-11', 'female'),
+(18, 'Sam', '$2b$10$pITtujxyyKYimh8yq0I6Pel7Qn5tSQQhIKLO6Ys1exos7iTU4Dng2', 'sam@gmail.co.uk', 'Sam King', '1990-05-11', 'female'),
 (19, 'Rose', '$2b$10$mLjpyQ9Trdrj9oABJLANTeLfmoH21JhbWs0TCvpiLWcje..nEAaBK', 'rose@gmail.com', 'Rose Jones', '2001-01-01', 'female'),
 (20, 'Steve', '$2b$10$CYIWv2wR.CuSRuJLCx20QuYljWQnJRTDk5ZxXjXz/wtHhfeMgW2Bi', 'steve@gmail.com', 'Steve Stephens', '1994-02-01', 'other'),
 (21, 'Susie', '$2b$10$cv4ItZKp7A8QWVUSjc5VgekdEfwOCsqrf6QCgK9bk3tyY397/UpuS', 'susie@gmail.com', 'Susie Brown', '2005-02-02', 'female'),
 (22, 'dave12356', '$2b$10$4tDKhBRnMyUlUjtz5LAziuNsl3VYyrD0mYLANW3vMUyfyXQd8kZXC', 'david@gmail.com', 'david', '1982-12-25', 'male'),
 (23, 'Patrick', '$2b$10$T0l6qtihE.7B3jsP8lt67ef.RQRAqzmtoWE8.GO6r7/D8O64XYYJ2', 'patrick@gmail.com', 'Patrick O\'Connor', '1970-02-28', 'male'),
-(61, 'Sam56', '$2b$10$7QUEvyLC6NLRPtVfKO5NgeJ8SvR3zlMGyhI4M26dg22k4S87Rn6im', 'sam@gmail.co.uk', 'Sam Williams', '1960-02-25', 'male');
+(61, 'Sam56', '$2b$10$7QUEvyLC6NLRPtVfKO5NgeJ8SvR3zlMGyhI4M26dg22k4S87Rn6im', 'sam@gmail.co.uk', 'Sam Williams', '1960-02-25', 'male'),
+(63, 'Sharon', '$2b$10$pITtujxyyKYimh8yq0I6Pel7Qn5tSQQhIKLO6Ys1exos7iTU4Dng2', 'sharon@gmail.com', 'Sharon S', '1999-12-31', 'female'),
+(64, 'test', '$2b$10$Y4KUOrAc6aL.fEArfpyxl.FOHAR5MSu5hWZqUS5j6CI89sK9Sny2a', 'test@gmail.com', 'test', '1921-01-01', 'male');
 
 --
 -- Indexes for dumped tables
@@ -368,7 +370,7 @@ ALTER TABLE `snapshot_default_trigger`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- Constraints for dumped tables
