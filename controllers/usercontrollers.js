@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { check, validationResult } = require("express-validator");
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 const config = {
   headers: {
     "x-api-userid": process.env.APIUSERID,
