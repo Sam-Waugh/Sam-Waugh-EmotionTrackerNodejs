@@ -33,7 +33,7 @@
                                                     <!-- Name input -->
                                                     <div class="mb-3">
                                                         <label class="form-label" for="name">Name</label>
-                                                        <input class="form-control" id="name" type="text" name="name" placeholder="Name" required/>
+                                                        <input class="form-control" id="name" type="text" name="name" placeholder="Name" pattern="[\w\s]+" required/>
                                                             <% if(errors && errors.name) { %>
                                                             <span class="text-danger"><%= errors.name.msg %></span>
                                                             <% } %>
@@ -41,7 +41,7 @@
                                                     <!-- Email address input -->
                                                     <div class="mb-3">
                                                         <label class="form-label" for="emailAddress">Email Address</label>
-                                                        <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" required/>
+                                                        <input class="form-control" id="emailAddress" type="email" name="email" placeholder="Email Address" pattern="[\w]+[@]{1}[\w]+[.]{1}[\w.]+" required/>
                                                             <% if (errors && errors.email) { %>
                                                             <span class="text-danger"><%= errors.email.msg %></span>
                                                             <% } %>
@@ -49,7 +49,7 @@
                                                     <!-- Message input -->
                                                     <div class="mb-3">
                                                         <label class="form-label" for="message">Message</label>
-                                                        <textarea class="form-control" id="message" type="text" name="message" placeholder="Message" style="height: 10rem;" required></textarea>
+                                                        <textarea class="form-control" id="message" type="text" name="message" placeholder="Message" style="height: 10rem;" pattern="[\w\s]+" required></textarea>
                                                             <% if(errors && errors.message) { %>
                                                             <span class="text-danger"><%= errors.message.msg %></span>
                                                             <% } %>

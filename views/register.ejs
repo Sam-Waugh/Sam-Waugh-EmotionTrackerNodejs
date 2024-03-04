@@ -36,14 +36,14 @@
                                                     <div class="form-outline mb-2">
                                                         <span id="message"></span>
                                                         <label class="form-label" for="username">Choose a Username</label>
-                                                        <input type="text" id="username" name="username" class="form-control form-control-lg" minlength="3" maxlength="255" pattern="[\w]+" aria-required="true" required />
+                                                        <input type="text" id="username" name="username" class="form-control form-control-lg" autocomplete="username" minlength="3" maxlength="255" pattern="[\w]+" aria-required="true" required />
                                                          <div id="usernameHelpBlock" class="form-text">
                                                             This must be unique and at least 3 alphanumeric characters long.
                                                         </div>
                                                     </div>
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="name">Your Name</label>
-                                                        <input type="text" id="name" name="name" class="form-control form-control-lg" autocomplete="username" minlength="3" maxlength="255" pattern="[\w\s]+" aria-required="true" required />
+                                                        <input type="text" id="name" name="name" class="form-control form-control-lg" minlength="3" maxlength="255" pattern="[\w\s]+" aria-required="true" required />
                                                     </div>
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="dob">Date Of Birth</label>
@@ -73,14 +73,14 @@
                                                     </div>
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="userpass">Password</label>
-                                                        <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" autocomplete="new-password" aria-describedby="passwordHelpBlock" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" aria-required="true" required />
+                                                        <input type="password" id="userpass" name="userpass" class="form-control form-control-lg" autocomplete="new-password" aria-describedby="passwordHelpBlock" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{8,}" aria-required="true" required />
                                                         <div id="passwordHelpBlock" class="form-text">
                                                             Your password must be 8-20 characters long, contain at least one number and one uppercase and lowercase letter, and must not contain spaces or special characters.
                                                         </div>
                                                     </div>
                                                     <div class="form-outline mb-3">
                                                         <label class="form-label" for="userpasscheck">Repeat your password</label>
-                                                        <input type="password" id="userpasscheck" name="userpasscheck" class="form-control form-control-lg" autocomplete="new-password" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" aria-required="true" required />
+                                                        <input type="password" id="userpasscheck" name="userpasscheck" class="form-control form-control-lg" autocomplete="new-password" minlength="8" maxlength="20" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{8,}"  aria-required="true" required />
                                                         <p id="warningtext">WARNING! Passwords entered do not match.</p>
                                                     </div>
                                                     <div class="d-flex justify-content-center mt-4">

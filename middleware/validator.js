@@ -7,7 +7,7 @@ const loginValidationRules = () => {
       .withMessage("Username must be entered!")
       .isLength({ min: 3 })
       .withMessage("Username must be at least 3 characters!")
-      .matches(/^[a-zA-Z0-9]+$/)
+      .matches(/^[a-zA-Z0-9_.]+$/)
       .withMessage("Username must be alphanumeric!"),
   ];
 };
@@ -19,14 +19,16 @@ const registerValidationRules = () => {
       .withMessage("Username must be entered!")
       .isLength({ min: 3 })
       .withMessage("Username must be at least 3 characters!")
-      .matches(/^[a-zA-Z0-9]+$/)
+      .matches(/^[a-zA-Z0-9_.]+$/)
       .withMessage("Username must be alphanumeric!"),
-    body("password")
+    body("userpass")
       .exists()
       .withMessage("Password must be entered!")
       .isLength({ min: 8, max: 20 })
       .withMessage("Password must be between 8 and 20 characters")
-      .matches(/^[a-zA-Z0-9]+$/)
+      .matches(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{8,}$/
+      )
       .withMessage("Password must be alphanumeric"),
     body("email")
       .exists()
