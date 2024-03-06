@@ -71,6 +71,7 @@ exports.getRegister = async (req, res) => {
   res.render("register", {
     loggedin: isloggedin,
     errors: [],
+    error: null
   });
 };
 
@@ -94,7 +95,8 @@ exports.postRegister = async (req, res) => {
       if (response.status > 400) {
         res.render("register", {
           loggedin: false,
-          error: response.data.message,
+          errors: errors,
+          error: response.data.message
         });
       }
       console.log(response.data);

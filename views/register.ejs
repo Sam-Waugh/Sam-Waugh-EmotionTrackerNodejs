@@ -37,9 +37,11 @@
                                                         <span id="message"></span>
                                                         <label class="form-label" for="username">Choose a Username</label>
                                                         <input type="text" id="username" name="username" class="form-control form-control-lg" autocomplete="username" minlength="3" maxlength="255" pattern="[\w]+" aria-required="true" required />
-                                                         <div id="usernameHelpBlock" class="form-text">
+                                                         <div id="usernameHelpBlock" class="form-text"></div>
                                                             This must be unique and at least 3 alphanumeric characters long.
-                                                        </div>
+                                                            <% if(error) { %>
+                                                            <span class="text-danger"><%= error %></span>
+                                                            <% } %>
                                                     </div>
                                                     <div class="form-outline mb-2">
                                                         <label class="form-label" for="name">Your Name</label>
