@@ -12,11 +12,6 @@ router.get("/login", controller.getLogin);
 router.get("/logout", isLoggedIn, controller.getLogout);
 router.get("/register", controller.getRegister);
 router.post("/login", loginValidationRules(), validate, controller.postLogin);
-router.post(
-  "/register",
-  registerValidationRules(),
-  validate,
-  controller.postRegister
-);
+router.post("/register", registerValidationRules(), validate, controller.postRegister);
 
 module.exports = router;
